@@ -7,9 +7,8 @@ class Game:
         self.win = win
     
     def _init(self):
-        #self.selected = None
+        #creation du board du jeu
         self.board = Board()
-        #self.turn = RED
         
     def update(self):
         self.board.draw(self.win)

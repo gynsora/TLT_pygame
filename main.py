@@ -1,19 +1,19 @@
 import pygame
-from TLT.constants import WIDTH , HEIGHT, SQUARE_SIZE
+from TLT.constants import WIDTH , HEIGHT
 from TLT.game import Game
 
 FPS = 60
 #WIN = window, ici on crée la taille de la fenetre du jeu
-WIN = pygame.display.set_mode((WIDTH,HEIGHT))
-#checkers = nom du jeu
-pygame.display.set_caption('The Lost Time')
+WINDOW_SIZE = pygame.display.set_mode((WIDTH,HEIGHT))
+#The Lost Time = nom du jeu
+pygame.display.set_caption("The Lost Time")
 
 def main():
     run = True
     #ici on crée un timer pour définir la vitesse de rafraichissement du jeu (FPS)
     clock = pygame.time.Clock()
     #on initialise le jeu
-    game = Game(WIN)
+    game = Game(WINDOW_SIZE)
 
     while run:
         clock.tick(FPS)

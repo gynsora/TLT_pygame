@@ -1,22 +1,39 @@
 import pygame
-from .constants import GREY ,BLACK ,WHITE ,ROWS ,COLS ,CHESSBOARD_SIZE ,SQUARE_SIZE ,MARGIN_SQUARE ,CHESSBOARD_X ,CHESSBOARD_Y
+from .constants import *
+from .utilities import *
 
 class Board:
     def __init__(self):
-        self.board = [[0,0,0,0,0],
+        self.board = [[0,1,3,5,11],
                       [0,0,0,0,0],
-                      [0,0,0,0,0],
-                      [0,0,0,0,0],
-                      [0,0,0,0,0]
+                      [6,0,0,0,0],
+                      [12,0,0,0,0],
+                      [8,0,0,0,0]
                       ]
         
-    def draw_squares(self, win): #permet de dessiner les cases de l'échequier
+    def draw_squares(self, win): #permet de dessiner les cases de l'échequier en fonction d'un élement (eau,feu, etc..)
         for row in range(ROWS):
             for col in range(COLS): 
-                x = CHESSBOARD_X + MARGIN_SQUARE + (row * MARGIN_SQUARE) + (row * SQUARE_SIZE)
-                y = CHESSBOARD_Y + MARGIN_SQUARE + (col * MARGIN_SQUARE) + (col * SQUARE_SIZE)
+                x,y = cal_pos_in_board(row,col)
+                tile_color = GREY
                 if self.board[row][col] == 0 :
-                    pygame.draw.rect(win, GREY, (x,y,SQUARE_SIZE,SQUARE_SIZE))
+                    tile_color = GREY
+                if self.board[row][col] == 1 :
+                    tile_color = WATER
+                if self.board[row][col] == 3 :
+                    tile_color = FIRE
+                if self.board[row][col] == 5 :
+                    tile_color = EARTH
+                if self.board[row][col] == 11 :
+                    tile_color = WIND
+                if self.board[row][col] == 12 :
+                    tile_color = ICE
+                if self.board[row][col] == 6 :
+                    tile_color = PLANT    
+                if self.board[row][col] == 8 :
+                    tile_color = CHARCOAL    
+
+                pygame.draw.rect(win, tile_color, (x,y,SQUARE_SIZE,SQUARE_SIZE))
 
     def draw(self,win):
         win.fill(WHITE) #on remplit la surface du jeu "win" en blanc
