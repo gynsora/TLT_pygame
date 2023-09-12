@@ -1,12 +1,12 @@
-from ..TLT.constants import *
+from TLT.constants import *
 ENEMY_LIST = { 
     "Dragoon":{
         "name" : "Dragoon",
         "x" : 2 ,
-        "y" : 4 ,
+        "y" : 1 ,
         "width" : 32,
         "height" : 32 ,
-        "color" : ELECTRIK ,
+        "color" : PINK ,
         "atk" : 25,
         "hp" : 1000,
 		"endurance" : 7,
