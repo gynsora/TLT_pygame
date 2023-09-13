@@ -12,7 +12,7 @@ class Board:
                       [0,0,0,0,0,0]
                       ]
         
-    def draw_squares(self, win): #permet de dessiner les cases de l'échequier en fonction d'un élement (eau,feu, etc..)
+    def draw_board(self, win): #permet de dessiner les cases de l'échequier en fonction d'un élement (eau,feu, etc..)
         ROWS = len(self.board)
         COLS = len(self.board[0])
         for row in range(ROWS):
@@ -39,7 +39,6 @@ class Board:
                 pygame.draw.rect(win, tile_color, (x,y,SQUARE_SIZE,SQUARE_SIZE))
 
     def draw(self,win):
-        win.fill(WIND) #on remplit la surface du jeu "win" en blanc
         pygame.draw.rect(win, BLACK, (CHESSBOARD_X ,CHESSBOARD_Y ,CHESSBOARD_SIZE ,CHESSBOARD_SIZE ))
-        self.draw_squares(win)
+        self.draw_board(win)
 
