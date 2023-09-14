@@ -1,7 +1,5 @@
 import pygame
-
-pygame.font.init()
-text_font_12 = pygame.font.SysFont("monospace",20,True)
+from .fonts import TEXT_FONT_MONO_20
 
 class Health():
     def __init__(self, x, y, character_image, character_name, max_health, endurance,color,dark_color):
@@ -59,5 +57,5 @@ class Health():
         diamond = pygame.image.load("Assets/img/utilities/diamond.png").convert_alpha()
         diamond = pygame.transform.scale(diamond, (32*1.1,32*1.1))
         win.blit(diamond, (self.x + 34, self.y+95 , 32*1.1 ,32*1.1))
-        endurance = text_font_12.render(str(self.endurance), 1, (0,0,0))
+        endurance = TEXT_FONT_MONO_20.render(str(self.endurance), 1, (0,0,0))
         win.blit(endurance, (self.x + 43, self.y+98))

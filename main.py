@@ -1,4 +1,5 @@
 import pygame
+import sys
 from TLT.constants import WIDTH , HEIGHT
 from Data.playerData import PLAYER_LIST
 from Data.enemyData import ENEMY_LIST
@@ -29,6 +30,7 @@ def main():
             # arret de la boucle du jeu, quand on quitte le jeu (on appuie sur la croix pour fermer le jeu)
             if event.type == pygame.QUIT:  
                 run = False
+                
 
             #test heatlthbar
             if event.type == pygame.KEYDOWN:
@@ -52,5 +54,6 @@ def main():
         game.update()
     
     pygame.quit()
+    sys.exit()
 
 main()
