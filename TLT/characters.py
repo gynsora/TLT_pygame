@@ -19,6 +19,8 @@ class Characters(pygame.sprite.Sprite):#stat des personnages du jeu
 
         self.critical = characters_attributes["critical"]
         self.defCritical = characters_attributes["defCritical"]
+
+        self.spells_List = characters_attributes["spells_List"]
         
         self.color = characters_attributes["color"]
         
@@ -29,3 +31,7 @@ class Characters(pygame.sprite.Sprite):#stat des personnages du jeu
         self.rect.x = x_pos
         self.rect.y = y_pos
         #self.squares = []
+        #creation la portee des spell (s'affiche lorsque l'on selectionne un sort)
+        #self.range = []
+        #creation la zone des spell (s'affiche lorsque l'on selectionne un sort et que l'on "hover" une case de la "range")
+        #self.zone = []

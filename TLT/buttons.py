@@ -1,9 +1,10 @@
 import pygame
+import os
 
 from .fonts import TEXT_FONT_ARIAL_15
 
 #bouton pour gerer la fin de tour du joueur
-class Button_Switch_Phase:
+class Button_Phase_Switcher:
     def __init__(self, text, width, height, pos):
         self.pressed = False
 
@@ -37,15 +38,45 @@ class Button_Switch_Phase:
                 else:
                     if self.pressed == True:
                         #CREER UNE FONCTION POU GERER LE CHANGEMENT DE PHASE
-                        if game.phase == "Mouvement":
-                            game.set_phase("Attaque")
-                        elif game.phase == "Attaque":
-                            game.set_phase("Défense")
-                        else:
-                            game.set_phase("Mouvement")
-                            game.set_turn(1)
-                            
+                        game.phase_manager()
                         self.pressed = False
+
+class Button_Spell:
+    def __init__(self, directory_spell_img, spell_attributes, x, y, width, height):
+        self.pressed = False
+        self.selected = False
+        self.spell_image = pygame.image.load(os.path.join(directory_spell_img, spell_attributes["image"]+".png")).convert_alpha()
+
+        self.spell_attributes = spell_attributes
+
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.top_rect = pygame.Rect((x,y),(width, height))
+
+        
+
+    
+    def draw(self,win,player):
+        win.blit(self.spell_image,(self.x ,self.y ,self.width ,self.height))
+        self.check_click(player)
+
+    #permet de modifier le board en fonctions des sort cliquer
+    def check_click(self, player):
+        if player.index_entities == player.name:
+            mouse_pos = pygame.mouse.get_pos()
+            if self.top_rect.collidepoint(mouse_pos):
+                if pygame.mouse.get_pressed()[0]:
+                    player.false_pressed_spells_Buttons()
+                    self.pressed = True
+                else:
+                    if self.pressed == True:
+                        #CREER UNE FONCTION POUR AFFICHER LA ZONE DU SORT
+                        self.selected = True
+                        print(self.spell_attributes["name"])
+                        self.pressed = False
+
 
 
         

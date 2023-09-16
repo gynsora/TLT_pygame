@@ -11,16 +11,18 @@ class Game:
     def __init__(self, win, bg_image, player_attributes, enemy_attributes):
         self.win = win
         #gestion des tours 
-        self.characters = [player_attributes["name"],enemy_attributes["name"],"Animation"]
-        self.current_turn = 0
-        self.turn = 0
-        self.characters_turn = self.characters[0]
+        self.characters = [enemy_attributes["name"],player_attributes["name"],"Animation"]
+        self.current_turn = 1
+        self.turn = 1
+        self.characters_turn = self.characters[1]
         self.phase = "Mouvement"
         self.player_attributes = player_attributes
         self.enemy_attributes = enemy_attributes
         self.new()
         directory_bg = os.path.join(os.path.dirname(__file__), "../Assets/img/background")
         self.bg = pygame.image.load(os.path.join(directory_bg, bg_image)).convert_alpha()
+        
+        
 
     def new(self):
         #création du board du jeu
@@ -37,16 +39,35 @@ class Game:
         self.all_sprites.add(self.player)
         self.all_sprites.add(self.enemy)
 
+        #on indique au joueur et à l'ennemi que le premier à jouer est le joueur
+        self.player.index_entities =  self.characters[1]
+        self.enemy.index_entities =  self.characters[1]
+
+        # print(self.player.nextPath)
+
     #modifie la phase du jeu
     def set_phase(self,phase):
-       self.phase = phase
+        self.phase = phase
 
     #modifie le tour de jeu (switch entre joueur, ennemi et "animation")
     def set_turn(self,turn):
-       self.turn = turn
-       self.characters_turn = self.characters[turn]
+        self.turn = turn
+        self.characters_turn = self.characters[turn]
+        #on indique au joueur et à l'ennemi que le premier à jouer est le joueur
+        self.player.index_entities =  self.characters[turn]
+        self.enemy.index_entities =  self.characters[turn]
 
-    
+    #permet de changer la phase du jeu, cette fonction est appeler par le joueur, l'ennemi et le jeu sous certaines conditions
+    def phase_manager(self):
+        self.player.false_pressed_spells_Buttons()
+        if self.phase == "Mouvement":
+            self.set_phase("Attaque")
+        elif self.phase == "Attaque":
+            self.set_phase("Défense")
+        else:
+            self.set_phase("Mouvement")
+            self.set_turn(0)
+
     def update(self):
         #création du background du jeu
         self.win.blit(self.bg,(-300,-200))#(0,0) quand bonne image trouvé
@@ -64,7 +85,7 @@ class Game:
         #texte indiquant les différentes phase de jeu pour le joueur 
         self.player.turn_indicator(self.win, self.characters_turn , self.phase)
 
-        #bouton pour finir un tour de jeu
+        #bouton pour finir un tour de jeu du joueur
         self.player.update_end_turn_button(self)
 
         pygame.display.update()

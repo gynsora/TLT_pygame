@@ -13,8 +13,6 @@ pygame.display.set_caption("The Lost Time")
 
 # pygame.font.init()
 
-
-
 def main():
     run = True
     #ici on crée un timer pour définir la vitesse de rafraichissement du jeu (FPS)
