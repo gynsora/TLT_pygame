@@ -107,7 +107,7 @@ class Player(Characters):
         if self.spell_selected and self.index_entities == self.name :
             if self.game_phase == "Mouvement":
                 # print(self.spell_selected["name"])
-                self.show_posibilities_move(screen)
+                self.show_posibilities_move(screen , self.spell_selected["range"])
     
     def update(self,win): 
         # permet d'afficher la health bar

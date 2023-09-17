@@ -19,42 +19,28 @@ class MoveCalc(pygame.sprite.Sprite):
         self.width = width
         self.height = height
     
-    def calc_movement(self,target): # faire cette fonction avec une matrice a 2 dimension pour utilisé les coordonées plus facilement
+    def calc_movement(self,target, range_of_spell): # faire cette fonction avec une matrice a 2 dimension pour utilisé les coordonées plus facilement
         coordinates = []
+        # les 2 boucle serve à crée une zone en forme de losange
+        nb_tilese = range_of_spell-1
+        for z in range(target.y+1, target.y+range_of_spell+1):
+            for k in range(target.x-nb_tilese, target.x+nb_tilese+1):
+                self.x = k
+                self.y = z
+                if self.x  != target.x or self.y  != target.y:
+                    coordinates.append(tuple((self.x, self.y)))
+            nb_tilese -= 1
 
-        self.x = target.x
-        self.y -= 1
-        coordinates.append(tuple((self.x, self.y)))
-
-        self.x -= 1 
-        self.y += 1
-        coordinates.append(tuple((self.x, self.y)))
-        # for k, v in POSSIBLE_MOVEMENTS.items():
-        #     if k == "top":
-        #         for _ in range(0, len(v)):
-        #             self.rect.x = target.rect.x
-        #             self.rect.y -= TILESIZE
-        #             coordinates.append(tuple((self.rect.x, self.rect.y)))
-            
-        #     elif k == "left":
-        #         for _ in range(0, len(v)):
-        #             self.rect.x -= TILESIZE
-        #             self.rect.y = target.rect.y
-        #             coordinates.append(tuple((self.rect.x, self.rect.y)))
-
-        #     elif k == "right":
-        #         self.rect.x = target.rect.x
-        #         for _ in range(0, len(v)):
-        #             self.rect.x += TILESIZE
-        #             self.rect.y = target.rect.y
-        #             coordinates.append(tuple((self.rect.x, self.rect.y)))
-
-        #     elif k == "bottom":
-        #         for _ in range(0, len(v)):
-        #             self.rect.x = target.rect.x
-        #             self.rect.y += TILESIZE
-        #             coordinates.append(tuple((self.rect.x, self.rect.y)))
+        nb_tiles = range_of_spell
+        for y in range(target.y ,target.y-range_of_spell-1, -1 ):
+            for x in range(target.x-nb_tiles, target.x+nb_tiles+1):
+                self.x = x
+                self.y = y
+                if self.x  != target.x or self.y  != target.y:
+                    coordinates.append(tuple((self.x, self.y)))
+            nb_tiles -= 1
         
+       
         return coordinates
     
     def cal_attack_options(self, target):
@@ -125,3 +111,12 @@ class MoveCalc(pygame.sprite.Sprite):
         #             coordinates.append(tuple((self.rect.x, self.rect.y)))
 
         return coordinates
+    
+    def diamond_form(self,target,range_of_spell):
+        pass
+
+    def cross_form(self):
+        pass
+
+    def front_form(self):
+        pass
