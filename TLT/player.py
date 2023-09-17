@@ -98,7 +98,6 @@ class Player(Characters):
             if spell.selected and self.game_phase == spell.spell_attributes["type"]:
                 self.spell_selected = spell.spell_attributes
                 # print(self.spell_selected["name"])
-                # print(self.spell_selected["name"])
                 break
     
     #permet d'afficher la zone et la portée d'un spell
@@ -108,6 +107,35 @@ class Player(Characters):
             if self.game_phase == "Mouvement":
                 # print(self.spell_selected["name"])
                 self.show_posibilities_move(screen , self.spell_selected["range"])
+
+    #fonction permettant de faire bouger le personnage après avoir activé l'état "moving"
+    # def actions(self, game):
+    #     self.mouse_rect_init = pygame.Surface((self.width, self.height))
+    #     self.mouse_rect = self.mouse_rect_init.get_rect()
+    #     self.mouse_rect.x, self.mouse_rect.y = pygame.mouse.get_pos()
+    #     for event in pygame.event.get():
+    #         for squa in self.squares:
+    #             if event.type == pygame.MOUSEBUTTONDOWN and squa.rect.collidepoint(self.mouse_rect.x, self.mouse_rect.y):
+    #                 print("squa")
+    #                 self.rect.x = squa.rect.x
+    #                 self.rect.y = squa.rect.y
+    #                 self.squares.clear()
+    #                 game.phase_manager()
+
+    def actions(self,game):
+        mouse_pos = pygame.mouse.get_pos()
+        for squa in self.squares:
+            if squa.top_rect.collidepoint(mouse_pos):
+                if pygame.mouse.get_pressed()[0]:   
+                    squa.pressed = True
+                else:
+                    if squa.pressed == True:    
+                        if self.index_entities == self.name:
+                            print("squa mouvement")
+                            self.rect.x = squa.rect.x
+                            self.rect.y = squa.rect.y
+                            self.squares.clear()
+                            game.phase_manager()
     
     def update(self,win): 
         # permet d'afficher la health bar

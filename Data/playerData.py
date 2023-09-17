@@ -35,6 +35,28 @@ PLAYER_LIST = {
 				},				
 				"Gcd":1,
 				"Damage": 0
+			},
+            {
+				"name" : "Tsunami",
+                "image" : "sampleAttaque",
+				"type" : "Attaque",
+				"direction":"Aérienne",
+				"description" :"Esquive une attaque en allant sur 1 case à côté.",
+                "element":"neutre",
+                "range":1,
+                "zone" :1,
+				"cost":				
+				{
+				  "hp" : 0,
+				  "endurance" : 2
+				},
+				"Gain":
+				{
+				  "hp" : 0,
+				  "endurance" : 0
+				},				
+				"Gcd":1,
+				"Damage": 0
 			}
         ]
 	}

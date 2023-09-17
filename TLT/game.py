@@ -97,4 +97,7 @@ class Game:
         #dessin des zones d'actions du joueur (si il a selectionné un sort)
         self.player.action_posibility(self.win)
 
+        #determine les actions possible du joueur (déplacement ,attaque ,défense)
+        self.player.actions(self)
+
         pygame.display.update()

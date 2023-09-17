@@ -48,7 +48,7 @@ class Button_Spell:
         self.pressed = False
         self.selected = False
         self.spell_image = pygame.image.load(os.path.join(directory_spell_img, spell_attributes["image"]+".png")).convert_alpha()
-
+        
         self.spell_attributes = spell_attributes
 
         self.x = x
@@ -62,6 +62,11 @@ class Button_Spell:
     #permet de dessiner les boutons de spell du joueur
     def draw(self,win,player):
         win.blit(self.spell_image,(self.x ,self.y ,self.width ,self.height))
+        if player.game_phase != self.spell_attributes["type"] or player.index_entities != player.name :
+            # pygame.draw.rect(win,(241,241,241,10),self.top_rect)
+            s = pygame.Surface((self.width,self.height), pygame.SRCALPHA)   
+            s.fill((0,0,0,128))                        
+            win.blit(s, (self.x,self.y,self.width ,self.height))
         self.check_click(player)
 
     #permet de modifier le board en fonctions des sort cliquer
@@ -81,6 +86,7 @@ class Button_Spell:
                         # print(self.spell_attributes["name"] , self.spell_attributes["type"])
                         player.switch()
                         self.pressed = False
+
 
 
 

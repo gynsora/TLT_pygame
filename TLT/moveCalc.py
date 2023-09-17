@@ -6,6 +6,7 @@ class MoveCalc(pygame.sprite.Sprite):
     def __init__(self,x,y,width,height): 
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((width,height))
+        self.top_rect = pygame.Rect((x,y),(width, height))
         #ajouter un argument pour recupérer le type de sort choisi (deplacement, sort)
         #modifier image.fill pour avoir des tile transparente 
         self.image.fill(LIGHT_YELLOW)
@@ -18,8 +19,10 @@ class MoveCalc(pygame.sprite.Sprite):
         self.y = y
         self.width = width
         self.height = height
+        self.pressed = False
     
-    def calc_movement(self,target, range_of_spell): # faire cette fonction avec une matrice a 2 dimension pour utilisé les coordonées plus facilement
+    #cette fonction permet de determiné les déplacement possible pour le joueur (quand cest son tour de jeu)
+    def calc_movement(self,target, range_of_spell): 
         coordinates = []
         # les 2 boucle serve à crée une zone en forme de losange
         nb_tilese = range_of_spell-1
@@ -45,70 +48,6 @@ class MoveCalc(pygame.sprite.Sprite):
     
     def cal_attack_options(self, target):
         coordinates = []
-
-        # for k, v in POSSIBLE_ATTACKS.items():
-
-        #     if k == "top":
-        #         self.rect.x = target.rect.x
-        #         self.rect.y = target.rect.y
-
-        #         for _ in range(0, len(v)):
-        #             self.rect.y -= TILESIZE
-        #             coordinates.append(tuple((self.rect.x, self.rect.y)))
-
-        #     elif k == "top-right":
-        #         self.rect.x = target.rect.x
-        #         self.rect.y = target.rect.y
-        #         for _ in range(0, len(v)):
-
-        #             self.rect.x += TILESIZE
-        #             self.rect.y -= TILESIZE
-        #             coordinates.append(tuple((self.rect.x, self.rect.y)))
-
-        #     elif k == "top-left":
-        #         self.rect.x = target.rect.x
-        #         self.rect.y = target.rect.y
-        #         for _ in range(0, len(v)):
-        #             self.rect.x -= TILESIZE
-        #             self.rect.y -= TILESIZE
-        #             coordinates.append(tuple((self.rect.x, self.rect.y)))
-
-        #     elif k == "right":
-        #         self.rect.x = target.rect.x
-        #         self.rect.y = target.rect.y
-        #         for _ in range(0, len(v)):
-        #             self.rect.x -= TILESIZE
-        #             coordinates.append(tuple((self.rect.x, self.rect.y)))
-
-        #     elif k == "left":
-        #         self.rect.x = target.rect.x
-        #         self.rect.y = target.rect.y
-        #         for _ in range(0, len(v)):
-        #             self.rect.x += TILESIZE
-        #             coordinates.append(tuple((self.rect.x, self.rect.y)))
-
-        #     elif k == "bottom-right":
-        #         self.rect.x = target.rect.x
-        #         self.rect.y = target.rect.y
-        #         for _ in range(0, len(v)):
-        #             self.rect.y += TILESIZE
-        #             self.rect.x += TILESIZE
-        #             coordinates.append(tuple((self.rect.x, self.rect.y)))
-
-        #     elif k == "bottom-left":
-        #         self.rect.x = target.rect.x
-        #         self.rect.y = target.rect.y
-        #         for _ in range(0, len(v)):
-        #             self.rect.y += TILESIZE
-        #             self.rect.x -= TILESIZE
-        #             coordinates.append(tuple((self.rect.x, self.rect.y)))
-
-        #     elif k == "bottom":
-        #         self.rect.x = target.rect.x
-        #         self.rect.y = target.rect.y
-        #         for _ in range(0, len(v)):
-        #             self.rect.y += TILESIZE
-        #             coordinates.append(tuple((self.rect.x, self.rect.y)))
 
         return coordinates
     
