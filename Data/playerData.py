@@ -37,7 +37,7 @@ PLAYER_LIST = {
 				"Damage": 0
 			},
             {
-				"name" : "Déplacement",
+				"name" : "Déplacement z",
                 "image" : "sampleDeplacement",
 				"type" : "Mouvement",
 				"direction":"Aérienne",

@@ -38,9 +38,11 @@ class Button_Phase_Switcher:
                 else:
                     if self.pressed == True:
                         #CREER UNE FONCTION POU GERER LE CHANGEMENT DE PHASE
+                        game.player.false_pressed_spells_Buttons()
                         game.phase_manager()
                         self.pressed = False
 
+# permet de créer les boutons de sort du joueur
 class Button_Spell:
     def __init__(self, directory_spell_img, spell_attributes, x, y, width, height):
         self.pressed = False
@@ -57,24 +59,27 @@ class Button_Spell:
 
         
 
-    
+    #permet de dessiner les boutons de spell du joueur
     def draw(self,win,player):
         win.blit(self.spell_image,(self.x ,self.y ,self.width ,self.height))
         self.check_click(player)
 
     #permet de modifier le board en fonctions des sort cliquer
     def check_click(self, player):
+        #verifie si cest bien le tour du joueur
         if player.index_entities == player.name:
             mouse_pos = pygame.mouse.get_pos()
             if self.top_rect.collidepoint(mouse_pos):
                 if pygame.mouse.get_pressed()[0]:
+                    #remet tout les boutton spell à leurs état inital (pressed = False) (selected = False)
                     player.false_pressed_spells_Buttons()
                     self.pressed = True
                 else:
                     if self.pressed == True:
                         #CREER UNE FONCTION POUR AFFICHER LA ZONE DU SORT
                         self.selected = True
-                        print(self.spell_attributes["name"])
+                        # print(self.spell_attributes["name"] , self.spell_attributes["type"])
+                        player.switch()
                         self.pressed = False
 
 

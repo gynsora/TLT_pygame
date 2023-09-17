@@ -43,11 +43,18 @@ class Game:
         self.player.index_entities =  self.characters[1]
         self.enemy.index_entities =  self.characters[1]
 
+        #on indique au joueur et à l'ennemi que la première phase est le mouvement 
+        self.player.game_phase =  "Mouvement"
+        self.enemy.game_phase =  "Mouvement"
+
         # print(self.player.nextPath)
 
     #modifie la phase du jeu
     def set_phase(self,phase):
         self.phase = phase
+        #on indique au joueur et à l'ennemi que la phase de jeu
+        self.player.game_phase = phase
+        self.enemy.game_phase = phase
 
     #modifie le tour de jeu (switch entre joueur, ennemi et "animation")
     def set_turn(self,turn):
@@ -59,7 +66,6 @@ class Game:
 
     #permet de changer la phase du jeu, cette fonction est appeler par le joueur, l'ennemi et le jeu sous certaines conditions
     def phase_manager(self):
-        self.player.false_pressed_spells_Buttons()
         if self.phase == "Mouvement":
             self.set_phase("Attaque")
         elif self.phase == "Attaque":
@@ -87,5 +93,8 @@ class Game:
 
         #bouton pour finir un tour de jeu du joueur
         self.player.update_end_turn_button(self)
+
+        #dessin des zones d'actions du joueur (si il a selectionné un sort)
+        self.player.action_posibility(self.win)
 
         pygame.display.update()

@@ -10,6 +10,7 @@ class Enemy(Characters):
         super().__init__(enemy_attributes)
         #le nom de la personne qui peut joueur
         self.index_entities  = ""
+        self.game_phase = ""
 
         #chemin vers le spritesheet de l'ennemi
         directory_spritesheet_img = os.path.join(os.path.dirname(__file__), "../Assets/img/spritesheet")

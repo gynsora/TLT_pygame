@@ -11,7 +11,10 @@ class Player(Characters):
     def __init__(self, players_attributes):
         super().__init__(players_attributes)
         # self.index = 0
+        # permet d'identifier si le joueur est entrain de joueur ou non. CELA permet d'activé ou non le clique des boutons spell
         self.index_entities = ""
+        self.game_phase = ""
+        
 
         #chemin vers le spritesheet du joueur et chargement de l'image spritesheet
         directory_spritesheet_img = os.path.join(os.path.dirname(__file__), "../Assets/img/spritesheet")
@@ -40,8 +43,12 @@ class Player(Characters):
 
         #création du chemin pour l'animation du déplacement joueur, animation du prochain chemin
         #par défaut, le chemin est identique à la case de départ du joueur
+        #création d'une liste de de coordonnée pour le chemin de déplacement joueur 
         self.nextPath = [[self.x,self.y]]
-
+        # creation d'une liste de coordonée pour la portée de chaque attaque / défense
+        self.spell_range = []
+        #création d'une liste contenant l'attaque ou la défense selectionné
+        self.spell_selected = []
                
     #fonction permettant d'afficher  les différentes phase du jeu
     def turn_indicator(self, win, turn, phase):
@@ -77,18 +84,38 @@ class Player(Characters):
         for spell in self.spells_Buttons:
             spell.pressed  = False
             spell.selected = False
-        print("all spell unpressed and unselected")
+        
+        print('all unpressed all unselected')
 
         # for i, spell in enumerate(self.spells_Buttons):
         #     spell.pressed = False
         #     spell.selected = False
         #     print("effacement numero :"+str(i))
-            
+
+    #permet d'afficher ou non la porté d'un spell (si c'est au tour du joueur de jouer)
+    def switch(self):
+        for spell in self.spells_Buttons:
+            if spell.selected and self.game_phase == spell.spell_attributes["type"]:
+                self.spell_selected = spell.spell_attributes
+                # print(self.spell_selected["name"])
+                # print(self.spell_selected["name"])
+                break
+    
+    #permet d'afficher la zone et la portée d'un spell
+    def action_posibility(self, screen): 
+        #si un sort a été selectionné par le joueur pendant son tour de jeu alors
+        if self.spell_selected and self.index_entities == self.name :
+            if self.game_phase == "Mouvement":
+                # print(self.spell_selected["name"])
+                self.show_posibilities_move(screen)
+    
     def update(self,win): 
         # permet d'afficher la health bar
         self.health.draw(win)
         for spell in self.spells_Buttons:
             spell.draw(win,self)
+
+        
         
         
        
