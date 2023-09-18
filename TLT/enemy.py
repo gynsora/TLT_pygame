@@ -28,6 +28,8 @@ class Enemy(Characters):
 
         #creation du chemin pour l'animation du déplacement joueur
         self.mouvPath = [[self.x,self.y]]
+        #permet de déterminé la position de l'ennemi
+        self.player_pos = []
        
     def update(self,win): # permet d'afficher la health bar
         self.health.draw(win)

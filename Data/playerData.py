@@ -2,8 +2,8 @@ from  TLT.constants import *
 PLAYER_LIST = {
     "Gynsora":{ 
 		"name" : "Gynsora",
-        "x" : 3 ,
-        "y" : 3 ,
+        "x" : 1 ,
+        "y" : 4,
         "width" : 64,
         "height" : 64 ,
         "color" : ELECTRIK ,
@@ -21,7 +21,7 @@ PLAYER_LIST = {
 				"direction":"Aérienne",
 				"description" :"Esquive une attaque en allant sur 1 case à côté.",
                 "element":"neutre",
-                "range":1,
+                "range":2,
                 "zone" :1,
 				"cost":				
 				{
@@ -41,10 +41,10 @@ PLAYER_LIST = {
                 "image" : "sampleAttaque",
 				"type" : "Attaque",
 				"direction":"Aérienne",
-				"description" :"Esquive une attaque en allant sur 1 case à côté.",
+				"description" :"lance un tsunami",
                 "element":"neutre",
                 "range":1,
-                "zone" :1,
+                "zone" :3,
 				"cost":				
 				{
 				  "hp" : 0,
@@ -56,7 +56,7 @@ PLAYER_LIST = {
 				  "endurance" : 0
 				},				
 				"Gcd":1,
-				"Damage": 0
+				"Damage": 250
 			}
         ]
 	}

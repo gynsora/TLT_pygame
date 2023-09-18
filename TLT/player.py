@@ -49,6 +49,10 @@ class Player(Characters):
         self.spell_range = []
         #création d'une liste contenant l'attaque ou la défense selectionné
         self.spell_selected = []
+        #permet de déterminé la position de l'ennemi
+        self.enemy_pos = []
+        #liste des cases ou le  joueur pourrais agir (attaque , deplacement, mouvement)
+        self.squares = []
                
     #fonction permettant d'afficher  les différentes phase du jeu
     def turn_indicator(self, win, turn, phase):
@@ -107,21 +111,11 @@ class Player(Characters):
             if self.game_phase == "Mouvement":
                 # print(self.spell_selected["name"])
                 self.show_posibilities_move(screen , self.spell_selected["range"])
+            if self.game_phase == "Attaque":
+                print(self.squares)
+                self.show_posibilities_attack(screen , self.spell_selected["range"])
 
-    #fonction permettant de faire bouger le personnage après avoir activé l'état "moving"
-    # def actions(self, game):
-    #     self.mouse_rect_init = pygame.Surface((self.width, self.height))
-    #     self.mouse_rect = self.mouse_rect_init.get_rect()
-    #     self.mouse_rect.x, self.mouse_rect.y = pygame.mouse.get_pos()
-    #     for event in pygame.event.get():
-    #         for squa in self.squares:
-    #             if event.type == pygame.MOUSEBUTTONDOWN and squa.rect.collidepoint(self.mouse_rect.x, self.mouse_rect.y):
-    #                 print("squa")
-    #                 self.rect.x = squa.rect.x
-    #                 self.rect.y = squa.rect.y
-    #                 self.squares.clear()
-    #                 game.phase_manager()
-
+    #décrit les actions faite lors que le joueur à selectionné une case d'un sort activer
     def actions(self,game):
         mouse_pos = pygame.mouse.get_pos()
         for squa in self.squares:
@@ -130,12 +124,40 @@ class Player(Characters):
                     squa.pressed = True
                 else:
                     if squa.pressed == True:    
-                        if self.index_entities == self.name:
-                            print("squa mouvement")
-                            self.rect.x = squa.rect.x
-                            self.rect.y = squa.rect.y
-                            self.squares.clear()
-                            game.phase_manager()
+                        if self.index_entities == self.name :
+                            if self.game_phase == "Mouvement":
+                                print("squa mouvement")
+                                self.rect.x = squa.rect.x
+                                self.rect.y = squa.rect.y
+                                self.x = squa.x
+                                self.y = squa.y
+                                game.phase_manager()
+
+    # Affiche la porteé du sort
+    def show_posibilities_move(self, win, range_of_spell):
+        self.calculation = MoveCalc(self.x, self.y, SQUARE_SIZE, SQUARE_SIZE)#on calcule la portée de mouvement du joueur
+        print(self.calculation.x)
+        for left,top in self.calculation.calc_movement(self,range_of_spell):#ici la portée de mouvement se calcule avec une cible, cette cible (target) est le joueur lui même
+            # print(top , left)
+            # rect_x,rect_y = calc_pos_in_board(top, left)
+            if coordinates_in_board(left, top) and (self.enemy_pos[0] != left or self.enemy_pos[1] != top):
+                self.square = MoveCalc(left, top,SQUARE_SIZE,SQUARE_SIZE)
+                self.all_sprites = pygame.sprite.Group()
+                self.all_sprites.add(self.square)
+                self.all_sprites.draw(win)
+                self.squares.append(self.square)
+    
+    def show_posibilities_attack(self, win, range_of_spell):
+        self.calculation = MoveCalc(self.x, self.y, SQUARE_SIZE, SQUARE_SIZE)#on calcule la portée de mouvement du joueur
+        for left, top in self.calculation.cal_attack_options(self,range_of_spell):#ici la portée de mouvement se calcule avec une cible, cette cible (target) est le joueur lui même
+            # print(top , left)
+            # rect_x,rect_y = calc_pos_in_board(top, left)
+            if coordinates_in_board(left, top) :
+                self.square = MoveCalc(left, top,SQUARE_SIZE,SQUARE_SIZE)
+                self.all_sprites = pygame.sprite.Group()
+                self.all_sprites.add(self.square)
+                self.all_sprites.draw(win)
+                self.squares.append(self.square)
     
     def update(self,win): 
         # permet d'afficher la health bar

@@ -47,7 +47,15 @@ class Game:
         self.player.game_phase =  "Mouvement"
         self.enemy.game_phase =  "Mouvement"
 
+        #on indique les position respective du joueur pour l'ennemi et de l'ennemi pour le joueur
+        self.player.enemy_pos = [self.enemy.x, self.enemy.y]
+        self.enemy.player_pos = [self.player.x, self.player.y]
         # print(self.player.nextPath)
+
+    #permet au 2 characters d'avoir la position de son adversaire
+    def set_pos(self):
+        self.player.enemy_pos = [self.enemy.x, self.enemy.y]
+        self.enemy.player_pos = [self.player.x, self.player.y]
 
     #modifie la phase du jeu
     def set_phase(self,phase):
@@ -67,10 +75,15 @@ class Game:
     #permet de changer la phase du jeu, cette fonction est appeler par le joueur, l'ennemi et le jeu sous certaines conditions
     def phase_manager(self):
         if self.phase == "Mouvement":
+            self.set_pos()
+            self.player.squares = [1]
+            self.player.squares.clear()
             self.set_phase("Attaque")
         elif self.phase == "Attaque":
+            self.set_pos()
             self.set_phase("Défense")
         else:
+            self.set_pos()
             self.set_phase("Mouvement")
             self.set_turn(0)
 
