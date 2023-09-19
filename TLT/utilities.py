@@ -14,50 +14,58 @@ def coordinates_in_board(x,y):
         return False
     
 #représente de la portée ou la zone d'un sort - en forme de losange
-def diamond_form(target,range_of_spell):
+def diamond_form(target_x,target_y, range_of_spell):
     coordinates = []
     # les 2 boucle serve à crée une zone en forme de losange
     nb_tilese = range_of_spell-1
-    for z in range(target.y+1, target.y+range_of_spell+1):
-        for k in range(target.x-nb_tilese, target.x+nb_tilese+1):
+    for z in range(target_y+1, target_y+range_of_spell+1):
+        for k in range(target_x-nb_tilese, target_x+nb_tilese+1):
             coordinates.append(tuple((k, z)))
         nb_tilese -= 1
 
     nb_tiles = range_of_spell
-    for y in range(target.y ,target.y-range_of_spell-1, -1 ):
-        for x in range(target.x-nb_tiles, target.x+nb_tiles+1):
+    for y in range(target_y ,target_y-range_of_spell-1, -1 ):
+        for x in range(target_x-nb_tiles, target_x+nb_tiles+1):
             coordinates.append(tuple((x, y)))
         nb_tiles -= 1
 
     return coordinates
 
 #représente de la portée ou la zone d'un sort - sur un case cible
-def target_form(target,range_of_spell):
+def target_form(target_x,target_y, range_of_spell):
     coordinates = []
-    coordinates.append(tuple((target.x, target.y)))
+    coordinates.append(tuple((target_x , target_y)))
     return coordinates
 
 #représente de la portée ou la zone d'un sort - en forme de croix 
-def cross_form(target,range_of_spell):
+def cross_form(target_x,target_y,range_of_spell):
     coordinates = []
-    coordinates.append(tuple((target.x, target.y)))
+    coordinates.append(tuple((target_x, target_y)))
 
-    for new_x_plus in range(target.x, target.x+range_of_spell+1):
-        y = target.y
+    for new_x_plus in range(target_x, target_x+range_of_spell+1):
+        y = target_y
         x = new_x_plus
         coordinates.append(tuple((x, y)))
-    for new_x_minus in range(target.x-range_of_spell, target.x):
-        y = target.y
+    for new_x_minus in range(target_x-range_of_spell, target_x):
+        y = target_y
         x = new_x_minus
         coordinates.append(tuple((x, y)))
-    for new_y_plus in range(target.y, target.y+range_of_spell+1):
+    for new_y_plus in range(target_y, target_y+range_of_spell+1):
         y = new_y_plus
-        x = target.x
+        x = target_x
         coordinates.append(tuple((x, y)))
-    for new_y_minus in range(target.y-range_of_spell, target.y):
+    for new_y_minus in range(target_y-range_of_spell, target_y):
         y = new_y_minus
-        x = target.x
+        x = target_x
         coordinates.append(tuple((x, y)))
     return coordinates
 
-   
+#permet de determine sous quel forme 
+def form_of_spell_range(target_x, target_y, range_of_spell,form_of_range_spell):
+        # print(form_of_range_spell) 
+        if form_of_range_spell == "Diamond":
+            return diamond_form(target_x,target_y, range_of_spell)
+        elif form_of_range_spell == "Target": 
+            return target_form(target_x,target_y, range_of_spell)
+        elif form_of_range_spell == "Cross":
+            return cross_form(target_x,target_y, range_of_spell)

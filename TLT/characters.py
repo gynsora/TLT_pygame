@@ -1,7 +1,6 @@
 import pygame
 from .constants import *
 from .utilities import *
-from .moveCalc import MoveCalc
 
 class Characters(pygame.sprite.Sprite):#stat des personnages du jeu
     
@@ -31,10 +30,6 @@ class Characters(pygame.sprite.Sprite):#stat des personnages du jeu
         x_pos,y_pos = calc_pos_in_board(self.x,self.y)
         self.rect.x = x_pos
         self.rect.y = y_pos
-        
-        #creation la portee des spell (s'affiche lorsque l'on selectionne un sort)
-        #self.range = []
-        #creation la zone des spell (s'affiche lorsque l'on selectionne un sort et que l'on "hover" une case de la "range")
-        #self.zone = []
+      
 
     

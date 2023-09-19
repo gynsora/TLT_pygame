@@ -29,7 +29,6 @@ def main():
             if event.type == pygame.QUIT:  
                 run = False
                 
-
             #test heatlthbar
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP:

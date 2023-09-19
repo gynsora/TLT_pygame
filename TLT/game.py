@@ -5,7 +5,6 @@ from .constants import *
 from .board import Board
 from .player import Player
 from .enemy import Enemy
-from .moveCalc import MoveCalc
 
 
 class Game:
@@ -78,8 +77,12 @@ class Game:
         if self.phase == "Mouvement":
             self.set_pos()
             self.player.spell_selected =""
+            self.player.squares = []
             self.set_phase("Attaque")
+
         elif self.phase == "Attaque":
+            #remettre self.player.squares à vide apres avoir selectionnée (la zone d'attaque du joueur)
+            # self.player.squares = []
             self.set_pos()
             self.set_phase("Défense")
         else:

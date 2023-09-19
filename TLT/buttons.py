@@ -84,7 +84,7 @@ class Button_Spell:
                         #CREER UNE FONCTION POUR AFFICHER LA ZONE DU SORT
                         self.selected = True
                         # print(self.spell_attributes["name"] , self.spell_attributes["type"])
-                        player.switch()
+                        player.switch_spell_selected()
                         self.pressed = False
 
 

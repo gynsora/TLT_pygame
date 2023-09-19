@@ -6,6 +6,7 @@ from .spritesheet import SpriteSheet
 from .health import Health
 from .fonts import TEXT_FONT_ARIAL_25
 from .buttons import Button_Phase_Switcher, Button_Spell
+from .utilities import *
 
 class Player(Characters):
     def __init__(self, players_attributes):
@@ -14,7 +15,8 @@ class Player(Characters):
         # permet d'identifier si le joueur est entrain de joueur ou non. CELA permet d'activé ou non le clique des boutons spell
         self.index_entities = ""
         self.game_phase = ""
-        
+
+        # self.test_portee = [[0,1],[0,2]]
 
         #chemin vers le spritesheet du joueur et chargement de l'image spritesheet
         directory_spritesheet_img = os.path.join(os.path.dirname(__file__), "../Assets/img/spritesheet")
@@ -46,7 +48,7 @@ class Player(Characters):
         #création d'une liste de de coordonnée pour le chemin de déplacement joueur 
         self.nextPath = [[self.x,self.y]]
         # creation d'une liste de coordonée pour la portée de chaque attaque / défense
-        self.spell_range = []
+        self.spell_zone = []
         #création d'une liste contenant l'attaque ou la défense selectionné
         self.spell_selected = []
         #permet de déterminé la position de l'ennemi
@@ -96,8 +98,8 @@ class Player(Characters):
         #     spell.selected = False
         #     print("effacement numero :"+str(i))
 
-    #permet d'afficher ou non la porté d'un spell (si c'est au tour du joueur de jouer)
-    def switch(self):
+    #permet de determine quelle sort à été choisi par le player
+    def switch_spell_selected(self):
         for spell in self.spells_Buttons:
             if spell.selected and self.game_phase == spell.spell_attributes["type"]:
                 self.spell_selected = spell.spell_attributes
@@ -121,54 +123,57 @@ class Player(Characters):
     def actions(self,game):
         mouse_pos = pygame.mouse.get_pos()
         for squa in self.squares:
-            if squa.top_rect.collidepoint(mouse_pos):
+            rect_x, rect_y = calc_pos_in_board(squa["x"],squa["y"])     
+            top_rect = pygame.Rect((rect_x, rect_y),(SQUARE_SIZE, SQUARE_SIZE))
+            if top_rect.collidepoint(mouse_pos):
+                ## ici gerer laffichage de la zone d'un spelll
+                range_tile = pygame.Surface((SQUARE_SIZE,SQUARE_SIZE), pygame.SRCALPHA)   
+                range_tile.fill(DARK_BLUE)              
+                game.win.blit(range_tile, (rect_x ,rect_y ,SQUARE_SIZE ,SQUARE_SIZE))
+                
                 if pygame.mouse.get_pressed()[0]:   
-                    squa.pressed = True
+                    squa["pressed"] = True
                 else:
-                    if squa.pressed == True:    
+                    if squa["pressed"] == True:    
                         if self.index_entities == self.name :
                             if self.game_phase == "Mouvement":
-                                print("le joueur se déplace vers ", squa.x , squa.y )
-                                self.rect.x = squa.rect.x
-                                self.rect.y = squa.rect.y
-                                self.x = squa.x
-                                self.y = squa.y
+                                print("le joueur se déplace vers ", squa["x"] , squa["y"] )
+                                #changer les 4 prochaine ligne pour une fonction qui animera le personnage
+                                self.rect.x = rect_x
+                                self.rect.y = rect_y
+                                self.x = squa["x"]
+                                self.y = squa["y"]
                                 game.phase_manager()
-
-    # Affiche la porteé du sort
+    
+    # Affiche la porteé du sort de moouvement
     def show_posibilities_move(self, win, range_of_spell):
-        self.calculation = MoveCalc(self.x, self.y, SQUARE_SIZE, SQUARE_SIZE)#on calcule la portée de mouvement du joueur
-        # print(self.calculation.x)
-        for left,top in self.calculation.calc_movement(self,range_of_spell):#ici la portée de mouvement se calcule avec une cible, cette cible (target) est le joueur lui même
-            # print(top , left)
-            # rect_x,rect_y = calc_pos_in_board(top, left)
+        for left, top in diamond_form(self.x,self.y,range_of_spell):
             if coordinates_in_board(left, top) and (self.enemy_pos[0] != left or self.enemy_pos[1] != top):
                 if self.x  != left or self.y  != top:
-                    self.square = MoveCalc(left, top,SQUARE_SIZE,SQUARE_SIZE)
-                    self.all_sprites = pygame.sprite.Group()
-                    self.all_sprites.add(self.square)
-                    self.all_sprites.draw(win)
-                    self.squares.append(self.square)
+                    range_tile = pygame.Surface((SQUARE_SIZE,SQUARE_SIZE), pygame.SRCALPHA)   
+                    range_tile.fill(LIGHT_YELLOW)      
+                    x, y = calc_pos_in_board(left ,top)   
+                    self.squares.append({"x": left,"y" :top, "pressed" :False})         
+                    win.blit(range_tile, (x ,y ,SQUARE_SIZE ,SQUARE_SIZE))
     
+    # A MODIFIER
     def show_posibilities_attack(self, win, range_of_spell,form_of_range_spell):
-        self.calculation = MoveCalc(self.x, self.y, SQUARE_SIZE, SQUARE_SIZE)#on calcule la portée de mouvement du joueur
-        for left, top in self.calculation.cal_attack_options(self,range_of_spell,form_of_range_spell):#ici la portée de mouvement se calcule avec une cible, cette cible (target) est le joueur lui même
-            # print(top , left)
-            # rect_x,rect_y = calc_pos_in_board(top, left)
+        range_of_spell = form_of_spell_range(self.x, self.y , range_of_spell, form_of_range_spell)
+        for left, top in range_of_spell:
             if coordinates_in_board(left, top) :
                 if form_of_range_spell == "Target": #on dessine un tile "jaune" sur nous si le sort nous cible (soin sur soi meme)
-                    self.square = MoveCalc(left, top,SQUARE_SIZE,SQUARE_SIZE)
-                    self.all_sprites = pygame.sprite.Group()
-                    self.all_sprites.add(self.square)
-                    self.all_sprites.draw(win)
-                    self.squares.append(self.square)
+                    range_tile = pygame.Surface((SQUARE_SIZE,SQUARE_SIZE), pygame.SRCALPHA)   
+                    range_tile.fill(LIGHT_YELLOW)      
+                    x, y = calc_pos_in_board(left ,top)   
+                    self.squares.append({"x": left,"y" :top, "pressed" :False})         
+                    win.blit(range_tile, (x ,y ,SQUARE_SIZE ,SQUARE_SIZE))
                 else:
                     if self.x  != left or self.y  != top : # on vérifie si la case est différente de la notre (le sort ne doit pas nous cibler)
-                        self.square = MoveCalc(left, top,SQUARE_SIZE,SQUARE_SIZE)
-                        self.all_sprites = pygame.sprite.Group()
-                        self.all_sprites.add(self.square)
-                        self.all_sprites.draw(win)
-                        self.squares.append(self.square)
+                        range_tile = pygame.Surface((SQUARE_SIZE,SQUARE_SIZE), pygame.SRCALPHA)   
+                        range_tile.fill(LIGHT_YELLOW)      
+                        x, y = calc_pos_in_board(left ,top)   
+                        self.squares.append({"x": left,"y" :top, "pressed" :False})         
+                        win.blit(range_tile, (x ,y ,SQUARE_SIZE ,SQUARE_SIZE))
     
     def update(self,win): 
         # permet d'afficher la health bar

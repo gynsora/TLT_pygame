@@ -28,40 +28,40 @@ class MoveCalc(pygame.sprite.Sprite):
     
     
     #cette fonction permet de determiné les déplacement possible pour le joueur (quand cest son tour de jeu)
-    def calc_movement(self,target, range_of_spell): 
-        coordinates = []
-        # les 2 boucle serve à crée une zone en forme de losange
-        nb_tilese = range_of_spell-1
-        for z in range(target.y+1, target.y+range_of_spell+1):
-            for k in range(target.x-nb_tilese, target.x+nb_tilese+1):
-                self.x = k
-                self.y = z
-                # if self.x  != target.x or self.y  != target.y:
-                coordinates.append(tuple((self.x, self.y)))
-            nb_tilese -= 1
+    # def calc_movement(self,target_pos, range_of_spell): 
+    #     coordinates = []
+    #     # les 2 boucle serve à crée une zone en forme de losange
+    #     nb_tilese = range_of_spell-1
+    #     for z in range(target.y+1, target.y+range_of_spell+1):
+    #         for k in range(target.x-nb_tilese, target.x+nb_tilese+1):
+    #             self.x = k
+    #             self.y = z
+    #             # if self.x  != target.x or self.y  != target.y:
+    #             coordinates.append(tuple((self.x, self.y)))
+    #         nb_tilese -= 1
 
         
 
-        nb_tiles = range_of_spell
-        for y in range(target.y ,target.y-range_of_spell-1, -1 ):
-            for x in range(target.x-nb_tiles, target.x+nb_tiles+1):
-                self.x = x
-                self.y = y
-                # if self.x  != target.x or self.y  != target.y:
-                coordinates.append(tuple((self.x, self.y)))
-            nb_tiles -= 1
+    #     nb_tiles = range_of_spell
+    #     for y in range(target.y ,target.y-range_of_spell-1, -1 ):
+    #         for x in range(target.x-nb_tiles, target.x+nb_tiles+1):
+    #             self.x = x
+    #             self.y = y
+    #             # if self.x  != target.x or self.y  != target.y:
+    #             coordinates.append(tuple((self.x, self.y)))
+    #         nb_tiles -= 1
         
        
-        return coordinates
+    #     return coordinates
     
-    def cal_attack_options(self, target, range_of_spell,form_of_range_spell):
+    def cal_attack_options(self, target_pos, range_of_spell,form_of_range_spell):
         # print(form_of_range_spell) 
         if form_of_range_spell == "Diamond":
-            return diamond_form(target, range_of_spell)
+            return diamond_form(target_pos, range_of_spell)
         elif form_of_range_spell == "Target": 
-            return target_form(target, range_of_spell)
+            return target_form(target_pos, range_of_spell)
         elif form_of_range_spell == "Cross":
-            return cross_form(target, range_of_spell)
+            return cross_form(target_pos, range_of_spell)
         
     
   
