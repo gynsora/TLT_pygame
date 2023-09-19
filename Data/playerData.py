@@ -2,8 +2,8 @@ from  TLT.constants import *
 PLAYER_LIST = {
     "Gynsora":{ 
 		"name" : "Gynsora",
-        "x" : 1 ,
-        "y" : 4,
+        "x" : 2 ,
+        "y" : 3,
         "width" : 64,
         "height" : 64 ,
         "color" : ELECTRIK ,
@@ -42,9 +42,11 @@ PLAYER_LIST = {
 				"type" : "Attaque",
 				"direction":"Aérienne",
 				"description" :"lance un tsunami",
-                "element":"neutre",
-                "range":1,
+                "element":"eau",
+                "range":2,
+                "rangeForm": "Cross",
                 "zone" :3,
+                "zoneForm" : "Rectangle",
 				"cost":				
 				{
 				  "hp" : 0,

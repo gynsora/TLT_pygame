@@ -5,6 +5,7 @@ from .constants import *
 from .board import Board
 from .player import Player
 from .enemy import Enemy
+from .moveCalc import MoveCalc
 
 
 class Game:
@@ -76,8 +77,7 @@ class Game:
     def phase_manager(self):
         if self.phase == "Mouvement":
             self.set_pos()
-            self.player.squares = [1]
-            self.player.squares.clear()
+            self.player.spell_selected =""
             self.set_phase("Attaque")
         elif self.phase == "Attaque":
             self.set_pos()
