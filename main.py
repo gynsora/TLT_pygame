@@ -5,6 +5,7 @@ from Data.playerData import PLAYER_LIST
 from Data.enemyData import ENEMY_LIST
 from TLT.game import Game
 
+
 FPS = 60
 #WINDOW_SIZE = window, ici on crée la taille de la fenetre du jeu
 WINDOW_SIZE = pygame.display.set_mode((WIDTH,HEIGHT))

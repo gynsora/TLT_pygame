@@ -6,7 +6,6 @@ from .board import Board
 from .player import Player
 from .enemy import Enemy
 
-
 class Game:
     def __init__(self, win, bg_image, player_attributes, enemy_attributes):
         self.win = win
@@ -76,19 +75,42 @@ class Game:
     def phase_manager(self):
         if self.phase == "Mouvement":
             self.set_pos()
-            self.player.spell_selected =""
+            self.player.spell_selected = ""
             self.player.squares = []
             self.set_phase("Attaque")
 
         elif self.phase == "Attaque":
             #remettre self.player.squares à vide apres avoir selectionnée (la zone d'attaque du joueur)
-            # self.player.squares = []
+            #faire attention à le faire juste pendant le tour du joueur pas pendant le tour de l'ennemi
+            self.player.squares = []
+            self.player.spell_selected = ""
             self.set_pos()
             self.set_phase("Défense")
-        else:
+
+        elif self.phase == "Défense":
+            print("Défense ?")
+            #spell choisi par le player
+            # print(self.player.spell_selected, "a")
+            #zone du spell choisi par le player
+            # print(self.player.spell_zone)
+
+            self.player.squares = []
+            self.set_turn(2)
+            self.set_phase("Combat")
+
+        else:#phase combat
             self.set_pos()
-            self.set_phase("Mouvement")
+            print("Fin combat ?")
+            #spell choisi par le player
+            print(self.player.spell_selected)
+            #zone du spell choisi par le player
+            print(self.player.spell_zone)
+
+            self.player.squares = []
             self.set_turn(0)
+            print(self.characters_turn)
+            self.set_phase("Mouvement")
+            
 
     def update(self):
         #création du background du jeu

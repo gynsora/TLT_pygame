@@ -29,10 +29,10 @@ def diamond_form(target_x,target_y, range_of_spell):
             coordinates.append(tuple((x, y)))
         nb_tiles -= 1
 
-    return coordinates
+    return list(set(coordinates))
 
 #représente de la portée ou la zone d'un sort - sur un case cible
-def target_form(target_x,target_y, range_of_spell):
+def target_form(target_x,target_y):
     coordinates = []
     coordinates.append(tuple((target_x , target_y)))
     return coordinates
@@ -58,14 +58,41 @@ def cross_form(target_x,target_y,range_of_spell):
         y = new_y_minus
         x = target_x
         coordinates.append(tuple((x, y)))
+    return list(set(coordinates))
+
+#représente de la portée ou la zone d'un sort - en forme de ligne normal (attaque frontale) 
+def normal_line_form(target_x,target_y, range_of_spell,player_x,player_y):
+    coordinates = []
+    #south
+    if target_x == player_x and target_y > player_y:
+        for i in range(target_y , target_y + range_of_spell):
+            coordinates.append(tuple((target_x, i)))
+    #north        
+    if target_x == player_x and target_y < player_y:
+        for i in range(target_y , target_y - range_of_spell,-1):
+            coordinates.append(tuple((target_x, i)))
+    #east
+    if target_y == player_y and target_x > player_x:
+        for i in range(target_x , target_x + range_of_spell):
+            coordinates.append(tuple((i, target_y)))
+    #west
+    if target_y == player_y and target_x < player_x:
+        for i in range(target_x , target_x - range_of_spell,-1):
+            coordinates.append(tuple((i, target_y)))
+    
     return coordinates
+        
+
 
 #permet de determine sous quel forme 
-def form_of_spell_range(target_x, target_y, range_of_spell,form_of_range_spell):
+# player_x et player_y sont utilisé pour le cas ou la forme du spell correspond à une zone de sort (pas une portee)
+def form_of_spell_range(target_x, target_y, range_of_spell,form_of_range_spell, player_x = 55, player_y = 55):
         # print(form_of_range_spell) 
         if form_of_range_spell == "Diamond":
             return diamond_form(target_x,target_y, range_of_spell)
         elif form_of_range_spell == "Target": 
-            return target_form(target_x,target_y, range_of_spell)
+            return target_form(target_x,target_y)
         elif form_of_range_spell == "Cross":
             return cross_form(target_x,target_y, range_of_spell)
+        elif form_of_range_spell == "NormalLine" and player_x != 55 and player_y != 55:
+            return normal_line_form(target_x,target_y, range_of_spell,player_x,player_y)

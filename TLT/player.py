@@ -47,13 +47,16 @@ class Player(Characters):
         #par défaut, le chemin est identique à la case de départ du joueur
         #création d'une liste de de coordonnée pour le chemin de déplacement joueur 
         self.nextPath = [[self.x,self.y]]
-        # creation d'une liste de coordonée pour la portée de chaque attaque / défense
+        # creation d'une liste de coordonée pour la zone de chaque attaque / défense enregistrera la zone selectionné au clique
         self.spell_zone = []
+        #contient le nom de la zone de spell et la portee de la zone de spell
+        self.spell_zone_selected = []
         #création d'une liste contenant l'attaque ou la défense selectionné
         self.spell_selected = []
+        
         #permet de déterminé la position de l'ennemi
         self.enemy_pos = []
-        #liste des cases ou le  joueur pourrais agir (attaque , deplacement, mouvement)
+        #liste des cases ou le joueur pourrais agir (attaque , deplacement, mouvement)
         self.squares = []
                
     #fonction permettant d'afficher  les différentes phase du jeu
@@ -103,6 +106,8 @@ class Player(Characters):
         for spell in self.spells_Buttons:
             if spell.selected and self.game_phase == spell.spell_attributes["type"]:
                 self.spell_selected = spell.spell_attributes
+
+                self.spell_zone_selected = spell.spell_attributes
                 # print(self.spell_selected["name"])
                 break
     
@@ -125,25 +130,39 @@ class Player(Characters):
         for squa in self.squares:
             rect_x, rect_y = calc_pos_in_board(squa["x"],squa["y"])     
             top_rect = pygame.Rect((rect_x, rect_y),(SQUARE_SIZE, SQUARE_SIZE))
-            if top_rect.collidepoint(mouse_pos):
-                ## ici gerer laffichage de la zone d'un spelll
-                range_tile = pygame.Surface((SQUARE_SIZE,SQUARE_SIZE), pygame.SRCALPHA)   
-                range_tile.fill(DARK_BLUE)              
-                game.win.blit(range_tile, (rect_x ,rect_y ,SQUARE_SIZE ,SQUARE_SIZE))
+            if top_rect.collidepoint(mouse_pos) :
+                ## ici gerer laffichage de la zone d'un spell
+                # spell_zone = self.spell_selected["zone"]
+                zone_of_spell = form_of_spell_range(squa["x"], squa["y"] ,self.spell_zone_selected["zone"] , self.spell_zone_selected["zoneForm"],self.x,self.y)
                 
+                for left, top in zone_of_spell:
+                    if coordinates_in_board(left, top) :
+                        rect_zone_x, rect_zone_y = calc_pos_in_board(left, top)    
+                        range_tile = pygame.Surface((SQUARE_SIZE,SQUARE_SIZE), pygame.SRCALPHA)   
+                        range_tile.fill(DARK_BLUE)              
+                        game.win.blit(range_tile, (rect_zone_x ,rect_zone_y ,SQUARE_SIZE ,SQUARE_SIZE))
+
                 if pygame.mouse.get_pressed()[0]:   
                     squa["pressed"] = True
                 else:
                     if squa["pressed"] == True:    
-                        if self.index_entities == self.name :
-                            if self.game_phase == "Mouvement":
-                                print("le joueur se déplace vers ", squa["x"] , squa["y"] )
-                                #changer les 4 prochaine ligne pour une fonction qui animera le personnage
-                                self.rect.x = rect_x
-                                self.rect.y = rect_y
-                                self.x = squa["x"]
-                                self.y = squa["y"]
-                                game.phase_manager()
+                        if self.index_entities == self.name  and self.game_phase == "Mouvement":
+                            print("le joueur se déplace vers ", squa["x"] , squa["y"] )
+                            #changer les 4 prochaine ligne pour une fonction qui animera le personnage
+                            self.rect.x = rect_x
+                            self.rect.y = rect_y
+                            self.x = squa["x"]
+                            self.y = squa["y"]
+                            game.phase_manager()
+                            break
+                        if self.index_entities == self.name  and self.game_phase == "Attaque":
+                            print("Le joueur attaque avec ",self.spell_selected["name"])
+                            print("zone du sort d'attaque: ",zone_of_spell)
+                            self.spell_zone = zone_of_spell
+                            game.phase_manager()
+                            break
+                            
+                            
     
     # Affiche la porteé du sort de moouvement
     def show_posibilities_move(self, win, range_of_spell):
@@ -157,11 +176,11 @@ class Player(Characters):
                     win.blit(range_tile, (x ,y ,SQUARE_SIZE ,SQUARE_SIZE))
     
     # A MODIFIER
-    def show_posibilities_attack(self, win, range_of_spell,form_of_range_spell):
-        range_of_spell = form_of_spell_range(self.x, self.y , range_of_spell, form_of_range_spell)
+    def show_posibilities_attack(self, win, range_of_spell,form_of_range):
+        range_of_spell = form_of_spell_range(self.x, self.y , range_of_spell, form_of_range)
         for left, top in range_of_spell:
             if coordinates_in_board(left, top) :
-                if form_of_range_spell == "Target": #on dessine un tile "jaune" sur nous si le sort nous cible (soin sur soi meme)
+                if form_of_range == "Target": #on dessine un tile "jaune" sur nous si le sort nous cible (soin sur soi meme)
                     range_tile = pygame.Surface((SQUARE_SIZE,SQUARE_SIZE), pygame.SRCALPHA)   
                     range_tile.fill(LIGHT_YELLOW)      
                     x, y = calc_pos_in_board(left ,top)   
@@ -174,6 +193,8 @@ class Player(Characters):
                         x, y = calc_pos_in_board(left ,top)   
                         self.squares.append({"x": left,"y" :top, "pressed" :False})         
                         win.blit(range_tile, (x ,y ,SQUARE_SIZE ,SQUARE_SIZE))
+    
+        
     
     def update(self,win): 
         # permet d'afficher la health bar

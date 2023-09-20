@@ -22,7 +22,9 @@ PLAYER_LIST = {
 				"description" :"Esquive une attaque en allant sur 1 case à côté.",
                 "element":"neutre",
                 "range":2,
-                "zone" :1,
+                "rangeForm": "Diamond",
+                "zone" :3,
+                "zoneForm" : "Target",
 				"cost":				
 				{
 				  "hp" : 0,
@@ -43,10 +45,10 @@ PLAYER_LIST = {
 				"direction":"Aérienne",
 				"description" :"lance un tsunami",
                 "element":"eau",
-                "range":2,
+                "range":1,
                 "rangeForm": "Cross",
                 "zone" :3,
-                "zoneForm" : "Rectangle",
+                "zoneForm" : "NormalLine",
 				"cost":				
 				{
 				  "hp" : 0,
