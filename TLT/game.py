@@ -1,6 +1,7 @@
 import pygame
 import os
 
+
 from .constants import *
 from .board import Board
 from .player import Player
@@ -11,10 +12,10 @@ class Game:
         self.win = win
         #gestion des tours 
         self.characters = [enemy_attributes["name"],player_attributes["name"],"Animation"]
-        self.current_turn = 1
-        self.turn = 1
-        self.characters_turn = self.characters[1]
-        self.phase = "Mouvement"
+        self.current_turn = 0
+        self.turn = self.current_turn
+        self.characters_turn = self.characters[self.turn]
+        self.phase = "Début"
         self.player_attributes = player_attributes
         self.enemy_attributes = enemy_attributes
         self.new()
@@ -39,17 +40,19 @@ class Game:
         self.all_sprites.add(self.enemy)
 
         #on indique au joueur et à l'ennemi que le premier à jouer est le joueur
-        self.player.index_entities =  self.characters[1]
-        self.enemy.index_entities =  self.characters[1]
+        self.player.index_entities =  self.characters[self.turn]
+        self.enemy.index_entities =  self.characters[self.turn]
 
         #on indique au joueur et à l'ennemi que la première phase est le mouvement 
-        self.player.game_phase =  "Mouvement"
-        self.enemy.game_phase =  "Mouvement"
+        self.player.game_phase =  self.phase
+        self.enemy.game_phase =  self.phase
 
         #on indique les position respective du joueur pour l'ennemi et de l'ennemi pour le joueur
         self.player.enemy_pos = [self.enemy.x, self.enemy.y]
         self.enemy.player_pos = [self.player.x, self.player.y]
         # print(self.player.nextPath)
+        #activation de phase_manager
+        self.phase_manager()
 
     #permet au 2 characters d'avoir la position de son adversaire
     def set_pos(self):
@@ -73,17 +76,37 @@ class Game:
 
     #permet de changer la phase du jeu, cette fonction est appeler par le joueur, l'ennemi et le jeu sous certaines conditions
     def phase_manager(self):
-        if self.phase == "Mouvement":
+        if self.phase == "Début":
+            print("début")
+            if self.characters_turn == self.player.name:
+                print("le joueur prépare son mouvement")
+                self.set_phase("Mouvement")
+            if self.characters_turn == self.enemy.name:
+                print("l'ennemi prépare son mouvement")
+                self.set_phase("Mouvement")
+                    
+        elif self.phase == "Mouvement":
+            print(self.characters_turn , "Mouvement")
+            if self.characters_turn == self.player.name:
+                self.player.spell_selected = ""
+                self.player.squares = []
+            if self.characters_turn == self.enemy.name:
+                self.enemy.spell_selected = ""
             self.set_pos()
-            self.player.spell_selected = ""
-            self.player.squares = []
             self.set_phase("Attaque")
-
+                       
         elif self.phase == "Attaque":
-            #remettre self.player.squares à vide apres avoir selectionnée (la zone d'attaque du joueur)
-            #faire attention à le faire juste pendant le tour du joueur pas pendant le tour de l'ennemi
-            self.player.squares = []
-            self.player.spell_selected = ""
+            print(self.characters_turn , "Attaque")
+            self.turn = (self.current_turn +1) % 2
+            self.set_turn(self.turn)
+
+            if self.characters_turn == self.player.name:
+                #remettre self.player.squares à vide apres avoir selectionnée (la zone d'attaque du joueur)
+                self.player.squares = []
+            if self.characters_turn == self.enemy.name:
+                print("defense enemy")
+                
+            # self.player.spell_selected = ""
             self.set_pos()
             self.set_phase("Défense")
 
@@ -95,6 +118,10 @@ class Game:
             # print(self.player.spell_zone)
 
             self.player.squares = []
+            print("sort du joueur : \n", self.player.spell_selected )
+            print("zone sort joueur ", self.player.spell_zone)
+            print("sort de l'ennemi : \n", self.enemy.spell_selected )
+            print("zone sort de l'ennemi  ", self.enemy.spell_zone)
             self.set_turn(2)
             self.set_phase("Combat")
 
@@ -137,5 +164,7 @@ class Game:
 
         #determine les actions possible du joueur (déplacement ,attaque ,défense)
         self.player.actions(self)
+        #determine les actions possible de l'ennemi (déplacement ,attaque ,défense)
+        self.enemy.actions(self)
 
         pygame.display.update()

@@ -2,8 +2,8 @@ from TLT.constants import *
 ENEMY_LIST = { 
     "Dragoon":{
         "name" : "Dragoon",
-        "x" : 2 ,
-        "y" : 1 ,
+        "x" : 0 ,
+        "y" : 0 ,
         "width" : 64,
         "height" : 64 ,
         "color" : PINK ,
@@ -35,6 +35,54 @@ ENEMY_LIST = {
 				},				
 				"Gcd":1,
 				"Damage": 0
+			},
+            {
+				"name" : "Soufle draconique",
+                "image" : "sampleAttaque",
+				"type" : "Attaque",
+				"direction":"Aérienne",
+				"description" :"lance un tsunami",
+                "element":"feu",
+                "range":1,
+                "rangeForm": "Diamond",
+                "zone" :3,
+                "zoneForm" : "NormalLine",
+				"cost":				
+				{
+				  "hp" : 0,
+				  "endurance" : 2
+				},
+				"Gain":
+				{
+				  "hp" : 0,
+				  "endurance" : 0
+				},				
+				"Gcd":1,
+				"Damage": 250
+			},
+            {
+				"name" : "Heal",
+                "image" : "sampleDefense",
+				"type" : "Défense",
+				"direction":"Aérienne",
+				"description" :"Soigne de 10 pdv",
+                "element":"neutre",
+                "range":1,
+                "rangeForm": "Target",
+                "zone" :1,
+                "zoneForm" : "Target",
+				"cost":				
+				{
+				  "hp" : 0,
+				  "endurance" : 2
+				},
+				"Gain":
+				{
+				  "hp" : 10,
+				  "endurance" : 0
+				},				
+				"Gcd":1,
+				"Damage": 250
 			}
         ]
     }

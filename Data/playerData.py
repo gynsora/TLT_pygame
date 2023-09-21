@@ -3,7 +3,7 @@ PLAYER_LIST = {
     "Gynsora":{ 
 		"name" : "Gynsora",
         "x" : 2 ,
-        "y" : 3,
+        "y" : 0,
         "width" : 64,
         "height" : 64 ,
         "color" : ELECTRIK ,

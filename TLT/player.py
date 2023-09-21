@@ -94,13 +94,9 @@ class Player(Characters):
             spell.pressed  = False
             spell.selected = False
         
-        print('all unpressed all unselected')
+        # print('all unpressed all unselected')
 
-        # for i, spell in enumerate(self.spells_Buttons):
-        #     spell.pressed = False
-        #     spell.selected = False
-        #     print("effacement numero :"+str(i))
-
+ 
     #permet de determine quelle sort à été choisi par le player
     def switch_spell_selected(self):
         for spell in self.spells_Buttons:
@@ -130,7 +126,7 @@ class Player(Characters):
         for squa in self.squares:
             rect_x, rect_y = calc_pos_in_board(squa["x"],squa["y"])     
             top_rect = pygame.Rect((rect_x, rect_y),(SQUARE_SIZE, SQUARE_SIZE))
-            if top_rect.collidepoint(mouse_pos) :
+            if top_rect.collidepoint(mouse_pos):
                 ## ici gerer laffichage de la zone d'un spell
                 # spell_zone = self.spell_selected["zone"]
                 zone_of_spell = form_of_spell_range(squa["x"], squa["y"] ,self.spell_zone_selected["zone"] , self.spell_zone_selected["zoneForm"],self.x,self.y)
