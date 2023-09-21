@@ -122,7 +122,7 @@ class Player(Characters):
                 # # self.squares = [0]
                 # self.squares.clear()
                 # print(self.squares)
-                self.show_posibilities_attack(screen , self.spell_selected["range"], self.spell_selected["rangeForm"])
+                self.show_posibilities_attack_defense(screen , self.spell_selected["range"], self.spell_selected["rangeForm"])
 
     #décrit les actions faite lorsque le joueur à selectionné une case d'un sort activer
     def actions(self,game):
@@ -139,7 +139,7 @@ class Player(Characters):
                     if coordinates_in_board(left, top) :
                         rect_zone_x, rect_zone_y = calc_pos_in_board(left, top)    
                         range_tile = pygame.Surface((SQUARE_SIZE,SQUARE_SIZE), pygame.SRCALPHA)   
-                        range_tile.fill(DARK_BLUE)              
+                        range_tile.fill(PURPLE)              
                         game.win.blit(range_tile, (rect_zone_x ,rect_zone_y ,SQUARE_SIZE ,SQUARE_SIZE))
 
                 if pygame.mouse.get_pressed()[0]:   
@@ -153,6 +153,8 @@ class Player(Characters):
                             self.rect.y = rect_y
                             self.x = squa["x"]
                             self.y = squa["y"]
+                            self.health.lost_health(self.spell_selected["cost"]["hp"])
+                            self.health.lost_endurance(self.spell_selected["cost"]["endurance"])
                             game.phase_manager()
                             break
                         if self.index_entities == self.name  and self.game_phase == "Attaque":
@@ -181,8 +183,8 @@ class Player(Characters):
                     self.squares.append({"x": left,"y" :top, "pressed" :False})         
                     win.blit(range_tile, (x ,y ,SQUARE_SIZE ,SQUARE_SIZE))
     
-    # A MODIFIER
-    def show_posibilities_attack(self, win, range_of_spell,form_of_range):
+    # Affiche la portée d'un sort d'attack ou de défense
+    def show_posibilities_attack_defense(self, win, range_of_spell,form_of_range):
         range_of_spell = form_of_spell_range(self.x, self.y , range_of_spell, form_of_range)
         for left, top in range_of_spell:
             if coordinates_in_board(left, top) :
