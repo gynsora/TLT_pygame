@@ -61,6 +61,30 @@ PLAYER_LIST = {
 				},				
 				"Gcd":1,
 				"Damage": 250
+			},
+            {
+				"name" : "Heal",
+                "image" : "sampleDefense",
+				"type" : "Défense",
+				"direction":"Aérienne",
+				"description" :"Soigne de 10 pdv",
+                "element":"neutre",
+                "range":1,
+                "rangeForm": "Target",
+                "zone" :1,
+                "zoneForm" : "Target",
+				"cost":				
+				{
+				  "hp" : 0,
+				  "endurance" : 2
+				},
+				"Gain":
+				{
+				  "hp" : 10,
+				  "endurance" : 0
+				},				
+				"Gcd":1,
+				"Damage": 250
 			}
         ]
 	}

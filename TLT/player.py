@@ -118,7 +118,7 @@ class Player(Characters):
             if self.game_phase == "Mouvement":
                 # print(self.spell_selected["name"])
                 self.show_posibilities_move(screen , self.spell_selected["range"])
-            elif self.game_phase == "Attaque":
+            elif self.game_phase == "Attaque" or self.game_phase == "Défense":
                 # # self.squares = [0]
                 # self.squares.clear()
                 # print(self.squares)
@@ -158,6 +158,12 @@ class Player(Characters):
                         if self.index_entities == self.name  and self.game_phase == "Attaque":
                             print("Le joueur attaque avec ",self.spell_selected["name"])
                             print("zone du sort d'attaque: ",zone_of_spell)
+                            self.spell_zone = zone_of_spell
+                            game.phase_manager()
+                            break
+                        if self.index_entities == self.name  and self.game_phase == "Défense":
+                            print("Le joueur défend avec ",self.spell_selected["name"])
+                            print("zone du sort de défense: ",zone_of_spell)
                             self.spell_zone = zone_of_spell
                             game.phase_manager()
                             break
