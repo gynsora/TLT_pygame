@@ -8,8 +8,10 @@ from .player import Player
 from .enemy import Enemy
 
 class Game:
-    def __init__(self, win, bg_image, player_attributes, enemy_attributes):
+    def __init__(self, win, bg_image, player_attributes, enemy_attributes,current_time):
         self.win = win
+        self.current_time = current_time
+        self.beginning_fight_time = 0
         #gestion des tours 
         self.characters = [enemy_attributes["name"],player_attributes["name"],"Animation"]
         self.current_turn = 0
@@ -123,8 +125,13 @@ class Game:
             print("sort de l'ennemi : \n", self.enemy.spell_selected )
             print("zone sort de l'ennemi  ", self.enemy.spell_zone)
             self.set_turn(2)
+            # on détermine le temps du début de la phase de combat
+            self.beginning_fight_time = pygame.time.get_ticks()  
             self.set_phase("Combat")
-
+            # on appel la fonction permettant de gérer la phase de combat
+            self.fight_manager()
+        
+    
         else:#phase combat
             self.set_pos()
             print("Fin combat ?")
@@ -137,7 +144,30 @@ class Game:
             self.set_turn(0)
             print(self.characters_turn)
             self.set_phase("Mouvement")
+
+    #Gére les phase de combat
+    def fight_manager(self):
+        print("temps courrant", self.current_time, "temps début combat ",self.beginning_fight_time )   
+        if  self.current_time - self.beginning_fight_time  > 2000 :
+            #Déterminer qui défend
+            #Faire les mouvements de défense
+            #changer les board si besoin
+            #Payer le prix du sort de défense
+            #Déterminer qui attaque
+            #Consommer les ressource de l'attaque
+            #Faire les mouvement d'attaque
+            #Changer le board si besoin
+            #Déterminer si 'attaquant touche son adversaire
+                #si oui, déterminer les degats
+            print( "delay of fight")
             
+            self.player.spell_selected = ""
+            self.player.squares = []
+            self.player.spell_zone_selected = []
+            self.current_turn += 1
+            next_turn = self.current_turn  % 2
+            self.set_turn(next_turn)
+            self.set_phase("Mouvement")
 
     def update(self):
         #création du background du jeu
@@ -166,5 +196,9 @@ class Game:
         self.player.actions(self)
         #determine les actions possible de l'ennemi (déplacement ,attaque ,défense)
         self.enemy.actions(self)
+
+        if(self.phase == "Combat"):
+            print("fight")
+            self.fight_manager()
 
         pygame.display.update()

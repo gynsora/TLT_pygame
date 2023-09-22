@@ -21,7 +21,7 @@ PLAYER_LIST = {
 				"direction":"Aérienne",
 				"description" :"Esquive une attaque en allant sur 1 case à côté.",
                 "element":"neutre",
-                "range":2,
+                "range":1,
                 "rangeForm": "Diamond",
                 "zone" :3,
                 "zoneForm" : "Target",

@@ -18,12 +18,19 @@ def main():
     run = True
     #ici on crée un timer pour définir la vitesse de rafraichissement du jeu (FPS)
     clock = pygame.time.Clock()
+
+    #on initialise le temps en cours
+    current_time = 0
     #on initialise le jeu
-    game = Game(WINDOW_SIZE,"terrainPlaine.jpg", PLAYER_LIST["Gynsora"], ENEMY_LIST["Dragoon"])
+    game = Game(WINDOW_SIZE,"terrainPlaine.jpg", PLAYER_LIST["Gynsora"], ENEMY_LIST["Dragoon"],current_time)
+    
 
     while run:
         #Frame du jeu
         clock.tick(FPS)
+        #Temps courant du jeu mis a jour pour le jeu
+        current_time = pygame.time.get_ticks()
+        game.current_time = current_time
 
         for event in pygame.event.get():
             # arret de la boucle du jeu, quand on quitte le jeu (on appuie sur la croix pour fermer le jeu)
@@ -50,7 +57,6 @@ def main():
            
         #update du jeu
         game.update()
-    
     pygame.quit()
     sys.exit()
 
