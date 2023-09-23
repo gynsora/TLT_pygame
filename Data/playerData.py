@@ -7,7 +7,7 @@ PLAYER_LIST = {
         "width" : 64,
         "height" : 64 ,
         "color" : ELECTRIK ,
-        "atk" : 25,
+        "atk" : 400,
         "hp" : 2000,
 		"endurance" : 7,
 		"critical" : 50,
@@ -30,13 +30,13 @@ PLAYER_LIST = {
 				  "hp" : 0,
 				  "endurance" : 2
 				},
-				"Gain":
+				"gain":
 				{
 				  "hp" : 0,
 				  "endurance" : 0
 				},				
-				"Gcd":1,
-				"Damage": 0
+				"gcd":1,
+				"damage": 0
 			},
             {
 				"name" : "Tsunami",
@@ -54,13 +54,13 @@ PLAYER_LIST = {
 				  "hp" : 0,
 				  "endurance" : 2
 				},
-				"Gain":
+				"gain":
 				{
 				  "hp" : 0,
 				  "endurance" : 0
 				},				
-				"Gcd":1,
-				"Damage": 250
+				"gcd":1,
+				"damage": 300
 			},
             {
 				"name" : "Heal",
@@ -78,13 +78,13 @@ PLAYER_LIST = {
 				  "hp" : 0,
 				  "endurance" : 2
 				},
-				"Gain":
+				"gain":
 				{
-				  "hp" : 10,
+				  "hp" : 200,
 				  "endurance" : 0
 				},				
-				"Gcd":1,
-				"Damage": 250
+				"gcd":1,
+				"damage": 0
 			}
         ]
 	}

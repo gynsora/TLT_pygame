@@ -1,7 +1,7 @@
 import pygame
 import os
 
-
+from .utilities import *
 from .constants import *
 from .board import Board
 from .player import Player
@@ -10,8 +10,15 @@ from .enemy import Enemy
 class Game:
     def __init__(self, win, bg_image, player_attributes, enemy_attributes,current_time):
         self.win = win
+
         self.current_time = current_time
         self.beginning_fight_time = 0
+
+        self.defense_fight = True
+        self.attack_fight = False
+
+        self.end_fight = False
+
         #gestion des tours 
         self.characters = [enemy_attributes["name"],player_attributes["name"],"Animation"]
         self.current_turn = 0
@@ -53,7 +60,7 @@ class Game:
         self.player.enemy_pos = [self.enemy.x, self.enemy.y]
         self.enemy.player_pos = [self.player.x, self.player.y]
         # print(self.player.nextPath)
-        #activation de phase_manager
+        #activation de phase_manager pour débuter le combat
         self.phase_manager()
 
     #permet au 2 characters d'avoir la position de son adversaire
@@ -88,12 +95,14 @@ class Game:
                 self.set_phase("Mouvement")
                     
         elif self.phase == "Mouvement":
-            print(self.characters_turn , "Mouvement")
+            # print(self.characters_turn , "Mouvement")
             if self.characters_turn == self.player.name:
                 self.player.spell_selected = ""
                 self.player.squares = []
+                self.player.spell_zone = []
             if self.characters_turn == self.enemy.name:
                 self.enemy.spell_selected = ""
+                self.enemy.spell_zone = []
             self.set_pos()
             self.set_phase("Attaque")
                        
@@ -113,16 +122,16 @@ class Game:
             self.set_phase("Défense")
 
         elif self.phase == "Défense":
-            print("Défense ?")
+            print("Combat ?")
             #spell choisi par le player
             # print(self.player.spell_selected, "a")
             #zone du spell choisi par le player
             # print(self.player.spell_zone)
 
             self.player.squares = []
-            print("sort du joueur : \n", self.player.spell_selected )
+            print("sort du joueur : \n", self.player.spell_register )
             print("zone sort joueur ", self.player.spell_zone)
-            print("sort de l'ennemi : \n", self.enemy.spell_selected )
+            print("sort de l'ennemi : \n", self.enemy.spell_register )
             print("zone sort de l'ennemi  ", self.enemy.spell_zone)
             self.set_turn(2)
             # on détermine le temps du début de la phase de combat
@@ -135,39 +144,159 @@ class Game:
         else:#phase combat
             self.set_pos()
             print("Fin combat ?")
-            #spell choisi par le player
-            print(self.player.spell_selected)
-            #zone du spell choisi par le player
-            print(self.player.spell_zone)
 
-            self.player.squares = []
-            self.set_turn(0)
-            print(self.characters_turn)
-            self.set_phase("Mouvement")
 
     #Gére les phase de combat
     def fight_manager(self):
-        print("temps courrant", self.current_time, "temps début combat ",self.beginning_fight_time )   
-        if  self.current_time - self.beginning_fight_time  > 2000 :
+        # print("temps courrant", self.current_time, "temps début combat ",self.beginning_fight_time )   
+        if  self.current_time - self.beginning_fight_time  > 200 and self.defense_fight:
             #Déterminer qui défend
-            #Faire les mouvements de défense
-            #changer les board si besoin
-            #Payer le prix du sort de défense
+            if self.characters[(self.current_turn+1)%2] == self.player.name and self.player.spell_register and self.player.spell_zone:    
+                #cree une fonction de défense avec le joueur comme paramètre
+                self.fight_defensive_actions(self.player.name)
+            elif self.characters[(self.current_turn+1)%2] == self.enemy.name and self.enemy.spell_register and self.enemy.spell_zone:
+                #cree une fonction de défense avec l'ennemi comme paramètre
+                self.fight_defensive_actions(self.enemy.name)
+            else:
+                print("pas de défense")
+                self.defense_fight = False
+                self.attack_fight = True
+
+        elif self.current_time - self.beginning_fight_time  > 700 and self.attack_fight:    
             #Déterminer qui attaque
-            #Consommer les ressource de l'attaque
-            #Faire les mouvement d'attaque
-            #Changer le board si besoin
-            #Déterminer si 'attaquant touche son adversaire
-                #si oui, déterminer les degats
-            print( "delay of fight")
+            if self.characters[(self.current_turn)%2] == self.player.name and self.player.spell_register and self.player.spell_zone: 
+                #cree une fonction d'attaque avec le joueur comme paramètre
+                self.fight_offensive_actions(self.player.name)
+            elif self.characters[(self.current_turn)%2] == self.enemy.name and self.enemy.spell_register and self.enemy.spell_zone:
+                #cree une fonction d'attaque avec l'ennemi comme paramètre
+                self.fight_offensive_actions(self.enemy.name)
+            else:
+                print("pas d'attaque")
+                self.attack_fight = False
             
-            self.player.spell_selected = ""
+           
+        elif  self.current_time - self.beginning_fight_time  > 1300:  
+            print("delay of fight") 
+
+            self.defense_fight = True
+            self.attack_fight = False  
+ 
             self.player.squares = []
-            self.player.spell_zone_selected = []
-            self.current_turn += 1
-            next_turn = self.current_turn  % 2
-            self.set_turn(next_turn)
-            self.set_phase("Mouvement")
+            self.player.spell_register = []
+            self.player.spell_selected = []
+            # a utiliser quand le joueur récuperer toute son endurance
+            # self.player.health.set_endurance(self.player.endurance)
+
+            self.enemy.spell_selected = ""
+            self.enemy.spell_register = []
+            self.enemy.spell_selected = []
+            self.enemy.spell_zone = []
+            # a utiliser quand l'ennemi récuperer toute son endurance
+            # self.enemy.health.set_endurance(self.player.endurance)
+
+            if self.end_fight:
+                self.set_phase("est le vainqueur")
+                next_turn = self.current_turn  % 2
+                self.set_turn(next_turn)
+            else :
+                self.current_turn += 1
+                next_turn = self.current_turn  % 2
+                self.set_turn(next_turn)
+                self.set_phase("Mouvement")
+    
+    #détermine les actions  défensive faite pendant la phase de combat SI LA PERSONNE DECIDE DE DEFENDRE
+    def fight_defensive_actions(self,defender_name):
+        print(defender_name, " défend !!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        #Faire les mouvements de défense
+        if self.player.name == defender_name:
+            # print(self.player.spell_selected)
+            # print(self.player.spell_zone)
+            #faire les animations de sort défensif
+            # if self.player.spell_selected["rangeForm"] == "Target":
+            #     pass
+
+            #Payer le prix du sort de défense
+            self.player.health.lost_health(self.player.spell_register["cost"]["hp"])
+            self.player.health.lost_endurance(self.player.spell_register["cost"]["endurance"])
+            #Gain du sort défensif
+            self.player.health.gain_health(self.player.spell_register["gain"]["hp"])
+            self.player.health.gain_endurance(self.player.spell_register["gain"]["endurance"])
+
+           
+
+        elif self.enemy.name == defender_name:
+            # print(self.enemy.spell_selected)
+            # print(self.enemy.spell_zone)
+            #faire les animations de sort défensif
+            # if self.player.spell_selected["rangeForm"] == "Target":
+            #     pass
+
+            #Payer le prix du sort de défense
+            self.enemy.health.lost_health(self.enemy.spell_register["cost"]["hp"])
+            self.enemy.health.lost_endurance(self.enemy.spell_register["cost"]["endurance"])
+            #Gain du sort défensif
+            self.enemy.health.gain_health(self.enemy.spell_register["gain"]["hp"])
+            self.enemy.health.gain_endurance(self.enemy.spell_register["gain"]["endurance"])
+        
+        #Finir les actions défensive et commencer les actions offensive (durant la phase de combat)
+        self.defense_fight = False
+        self.attack_fight = True
+
+    #détermine les actions  offensive faite pendant la phase de combat SI LA PERSONNE DECIDE D'ATTAQUER
+    def fight_offensive_actions(self, attacker_name):
+        print(attacker_name, " Attaque !!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        if self.player.name == attacker_name:
+            #Faire les mouvement d'attaque
+            # 
+            # 
+            #Changer le board si besoin A CHANGER
+            for tile in self.player.spell_zone:
+                x , y  = tile
+                if coordinates_in_board(x, y):
+                    self.board.board[x][y]= element_number(self.player.spell_register["element"])
+            #Déterminer si l'attaquant touche son adversaire
+            for tile in self.player.spell_zone:
+                x, y = tile
+                if x == self.enemy.x and y == self.enemy.y:
+                    self.enemy.health.lost_health(self.player.spell_register["damage"]+self.player.atk)
+                    if self.enemy.health.current_health == 0:
+                        self.end_fight = True
+                    break
+            #Consommer les ressource de l'attaque
+            self.player.health.lost_health(self.player.spell_register["cost"]["hp"])
+            self.player.health.lost_endurance(self.player.spell_register["cost"]["endurance"])
+            #Gain du sort défensif
+            self.player.health.gain_health(self.player.spell_register["gain"]["hp"])
+            self.player.health.gain_endurance(self.player.spell_register["gain"]["endurance"])
+            # 
+            
+
+        if self.enemy.name == attacker_name:
+            #Faire les mouvement d'attaque
+            # 
+            # 
+            #Changer le board si besoin A CHANGER
+            for tile in self.enemy.spell_zone:
+                x , y  = tile
+                if coordinates_in_board(x, y):
+                    self.board.board[x][y]= element_number(self.enemy.spell_register["element"])
+            #Déterminer si l'attaquant touche son adversaire
+            for tile in self.enemy.spell_zone:
+                x, y = tile
+                if x == self.player.x and y == self.player.y:
+                    self.player.health.lost_health(self.enemy.spell_register["damage"]+self.enemy.atk)
+                    if self.player.health.current_health == 0:
+                        self.end_fight = True
+                    break
+            #Consommer les ressource de l'attaque
+            self.enemy.health.lost_health(self.enemy.spell_register["cost"]["hp"])
+            self.enemy.health.lost_endurance(self.enemy.spell_register["cost"]["endurance"])
+            #Gain du sort défensif
+            self.enemy.health.gain_health(self.enemy.spell_register["gain"]["hp"])
+            self.enemy.health.gain_endurance(self.enemy.spell_register["gain"]["endurance"])
+        
+        #Finir les actions offensive et finir la phase de combat 
+        self.attack_fight = False
 
     def update(self):
         #création du background du jeu
@@ -198,7 +327,6 @@ class Game:
         self.enemy.actions(self)
 
         if(self.phase == "Combat"):
-            print("fight")
             self.fight_manager()
 
         pygame.display.update()

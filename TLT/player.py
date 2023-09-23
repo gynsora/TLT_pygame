@@ -49,8 +49,8 @@ class Player(Characters):
         self.nextPath = [[self.x,self.y]]
         # creation d'une liste de coordonée pour la zone de chaque attaque / défense enregistrera la zone selectionné au clique
         self.spell_zone = []
-        #contient le nom de la zone de spell et la portee de la zone de spell
-        self.spell_zone_selected = []
+        #contient le nom de la zone de spell et la portee de la zone de spell (s'affiche en violet au hover)
+        self.spell_register = []
         #création d'une liste contenant l'attaque ou la défense selectionné
         self.spell_selected = []
         
@@ -64,13 +64,19 @@ class Player(Characters):
         turn_indicator = ""
 
         if turn == self.name :
-            turn_indicator = "A votre tour"
+            if phase == "est le vainqueur":
+                turn_indicator = self.name
+            else:
+                turn_indicator = "A votre tour"
             text_color = BLUE
         elif turn == "Animation" :
             turn_indicator = "Animation"
             text_color = YELLOW
         else:
-            turn_indicator = "Tour adverse"
+            if phase == "est le vainqueur":
+                turn_indicator = "L'ennemi"
+            else:
+                turn_indicator = "Tour adverse"
             text_color = RED
 
         pygame.draw.rect(win, (40,43,43), (CHESSBOARD_X , CHESSBOARD_Y + CHESSBOARD_SIZE + 10 , CHESSBOARD_SIZE, 40) )
@@ -103,7 +109,7 @@ class Player(Characters):
             if spell.selected and self.game_phase == spell.spell_attributes["type"]:
                 self.spell_selected = spell.spell_attributes
 
-                self.spell_zone_selected = spell.spell_attributes
+                self.spell_register = spell.spell_attributes
                 # print(self.spell_selected["name"])
                 break
     
@@ -129,7 +135,7 @@ class Player(Characters):
             if top_rect.collidepoint(mouse_pos):
                 ## ici gerer laffichage de la zone d'un spell
                 # spell_zone = self.spell_selected["zone"]
-                zone_of_spell = form_of_spell_range(squa["x"], squa["y"] ,self.spell_zone_selected["zone"] , self.spell_zone_selected["zoneForm"],self.x,self.y)
+                zone_of_spell = form_of_spell_range(squa["x"], squa["y"] ,self.spell_register["zone"] , self.spell_register["zoneForm"],self.x,self.y)
                 
                 for left, top in zone_of_spell:
                     if coordinates_in_board(left, top) :
@@ -154,14 +160,14 @@ class Player(Characters):
                             game.phase_manager()
                             break
                         if self.index_entities == self.name  and self.game_phase == "Attaque":
-                            print("Le joueur attaque avec ",self.spell_selected["name"])
-                            print("zone du sort d'attaque: ",zone_of_spell)
+                            # print("Le joueur attaque avec ",self.spell_selected["name"])
+                            # print("zone du sort d'attaque: ",zone_of_spell)
                             self.spell_zone = zone_of_spell
                             game.phase_manager()
                             break
                         if self.index_entities == self.name  and self.game_phase == "Défense":
-                            print("Le joueur défend avec ",self.spell_selected["name"])
-                            print("zone du sort de défense: ",zone_of_spell)
+                            # print("Le joueur défend avec ",self.spell_selected["name"])
+                            # print("zone du sort de défense: ",zone_of_spell)
                             self.spell_zone = zone_of_spell
                             game.phase_manager()
                             break

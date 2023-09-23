@@ -11,21 +11,21 @@ class Board:
             for col in range(COLS): 
                 x,y = calc_pos_in_board(row,col)
                 tile_color = GREY
-                if self.board[col][row] == 0 :
+                if self.board[col][row] == 0 :  #neutre == 0
                     tile_color = GREY
-                if self.board[row][col] == 1 :
+                if self.board[row][col] == 1 :  #eau == 1
                      tile_color = WATER
-                if self.board[row][col] == 3 :
+                if self.board[row][col] == 3 :  #feu == 3
                     tile_color = FIRE
-                if self.board[row][col] == 5 :
+                if self.board[row][col] == 5 :  #terre == 5
                     tile_color = EARTH
-                if self.board[row][col] == 11 :
+                if self.board[row][col] == 11 : #air == 11
                     tile_color = WIND
-                if self.board[row][col] == 12 :
+                if self.board[row][col] == 12 : #glace == 12
                     tile_color = ICE
-                if self.board[row][col] == 6 :
+                if self.board[row][col] == 6 :  #plante == 6
                     tile_color = PLANT    
-                if self.board[row][col] == 8 :
+                if self.board[row][col] == 8 :  #charbon == 8
                     tile_color = CHARCOAL    
 
                 pygame.draw.rect(win, tile_color, (x,y,SQUARE_SIZE,SQUARE_SIZE))

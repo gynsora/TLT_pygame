@@ -20,7 +20,7 @@ class Health():
         self.max_health = max_health
         self.health_bar_length = 100
         self.health_ratio = self.max_health / self.health_bar_length
-
+    
     #permet réduire les pdv
     def lost_health(self,amount):
         if self.current_health > 0:
@@ -35,6 +35,10 @@ class Health():
         if self.current_health >= self.max_health:
             self.current_health = self.max_health
     
+    #permet de remettre l'endurance à son état de base (fin de tour)
+    def set_endurance(self,amount):
+        self.endurance = amount
+        
     #permet réduire l'endurance
     def lost_endurance(self,amount):
         if self.endurance > 0:

@@ -28,13 +28,13 @@ ENEMY_LIST = {
 				  "hp" : 0,
 				  "endurance" : 2
 				},
-				"Gain":
+				"gain":
 				{
 				  "hp" : 0,
 				  "endurance" : 0
 				},				
-				"Gcd":1,
-				"Damage": 0
+				"gcd":1,
+				"damage": 0
 			},
             {
 				"name" : "Soufle draconique",
@@ -52,13 +52,13 @@ ENEMY_LIST = {
 				  "hp" : 0,
 				  "endurance" : 2
 				},
-				"Gain":
+				"gain":
 				{
 				  "hp" : 0,
 				  "endurance" : 0
 				},				
-				"Gcd":1,
-				"Damage": 250
+				"gcd":1,
+				"damage": 100
 			},
             {
 				"name" : "Heal",
@@ -76,13 +76,13 @@ ENEMY_LIST = {
 				  "hp" : 0,
 				  "endurance" : 2
 				},
-				"Gain":
+				"gain":
 				{
 				  "hp" : 10,
 				  "endurance" : 0
 				},				
-				"Gcd":1,
-				"Damage": 250
+				"gcd":1,
+				"damage": 0
 			}
         ]
     }

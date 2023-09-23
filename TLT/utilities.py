@@ -83,7 +83,6 @@ def normal_line_form(target_x,target_y, range_of_spell,player_x,player_y):
     return coordinates
         
 
-
 #permet de determine sous quel forme 
 # player_x et player_y sont utilisé pour le cas ou la forme du spell correspond à une zone de sort (pas une portee)
 def form_of_spell_range(target_x, target_y, range_of_spell,form_of_range_spell, player_x = 55, player_y = 55):
@@ -96,3 +95,25 @@ def form_of_spell_range(target_x, target_y, range_of_spell,form_of_range_spell, 
             return cross_form(target_x,target_y, range_of_spell)
         elif form_of_range_spell == "NormalLine" and player_x != 55 and player_y != 55:
             return normal_line_form(target_x,target_y, range_of_spell,player_x,player_y)
+        
+
+#fonction permettant de gérer les réactions élementaire A UTILISER PLUS TARD
+def set_element_on_board(spell_type):
+    pass
+
+# fonction permettant de retourner le numéro d'un élément 
+def element_number(spell_type):
+    if spell_type == "eau" :
+        return 1
+    elif spell_type == "feu" :
+        return 3
+    elif spell_type == "terre" :
+        return 5
+    elif spell_type == "air" :
+        return 11
+    elif spell_type == "glace" :
+        return 12
+    elif spell_type == "plante" :
+        return 6
+    elif spell_type == "charbon" :
+        return 8

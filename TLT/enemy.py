@@ -36,7 +36,7 @@ class Enemy(Characters):
         # creation d'une liste de coordonée pour la zone de chaque attaque / défense enregistrera la zone selectionné au clique
         self.spell_zone = []
         #contient le nom de la zone de spell et la portee de la zone de spell (A SUPPRIMER SI BESOIN)
-        self.spell_zone_selected = []
+        self.spell_register = []
         #création d'une liste contenant l'attaque ou la défense selectionné
         self.spell_selected = []
     
@@ -65,8 +65,6 @@ class Enemy(Characters):
             self.health.lost_endurance(self.spell_selected["cost"]["endurance"])
         else:
             print(self.name, " décide de ne pas bouger")    
-
-        
         
         game.phase_manager()
 
@@ -75,6 +73,7 @@ class Enemy(Characters):
         print(self.name, "choisi son Attaque" )
         #améliorer la fonction pour choisir différent sort en fonction des situations
         self.spell_selected = self.spells_List[1]
+        self.spell_register = self.spells_List[1]
         #si l'ennemi et le joueur sont des ordonées différentes
         if self.y != self.player_pos[1]:
             for i in range(1,ROWS):
@@ -83,9 +82,7 @@ class Enemy(Characters):
             for i in range(ROWS):
                 if i != self.x:
                     self.spell_zone.append(tuple((i, self.y)))    
-        # # print(self.spell_zone)
-        # self.health.lost_health(self.spell_selected["cost"]["hp"])
-        # self.health.lost_endurance(self.spell_selected["cost"]["endurance"])
+        # # print(self.spell_zone)  
         
         game.phase_manager()
 
@@ -94,14 +91,11 @@ class Enemy(Characters):
         print(self.name, "choisi sa Défense" )
         #améliorer la fonction pour choisir différent sort en fonction des situations
         self.spell_selected = self.spells_List[2]
+        self.spell_register = self.spells_List[2]
         #si l'ennemi et le joueur sont des ordonées différentes
        
         self.spell_zone.append(tuple((self.x, self.y)))    
         # print(self.spell_zone)
-
-        # self.health.lost_health(self.spell_selected["cost"]["hp"])
-        # self.health.lost_endurance(self.spell_selected["cost"]["endurance"])
-        
         game.phase_manager()
 
          
