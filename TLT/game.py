@@ -89,10 +89,12 @@ class Game:
             print("début")
             if self.characters_turn == self.player.name:
                 print("le joueur prépare son mouvement")
-                self.set_phase("Mouvement")
+                # self.set_phase("Mouvement")
             if self.characters_turn == self.enemy.name:
                 print("l'ennemi prépare son mouvement")
-                self.set_phase("Mouvement")
+                self.enemy.thinking_time = pygame.time.get_ticks()  
+                print(self.enemy.thinking_time)
+            self.set_phase("Mouvement")
                     
         elif self.phase == "Mouvement":
             # print(self.characters_turn , "Mouvement")
@@ -103,6 +105,7 @@ class Game:
             if self.characters_turn == self.enemy.name:
                 self.enemy.spell_selected = ""
                 self.enemy.spell_zone = []
+                self.enemy.thinking_time = pygame.time.get_ticks()  
             self.set_pos()
             self.set_phase("Attaque")
                        
@@ -116,6 +119,7 @@ class Game:
                 self.player.squares = []
             if self.characters_turn == self.enemy.name:
                 print("defense enemy")
+                self.enemy.thinking_time = pygame.time.get_ticks()  
                 
             # self.player.spell_selected = ""
             self.set_pos()
@@ -202,6 +206,8 @@ class Game:
                 self.current_turn += 1
                 next_turn = self.current_turn  % 2
                 self.set_turn(next_turn)
+                if self.characters_turn == self.enemy.name :
+                    self.enemy.thinking_time = pygame.time.get_ticks()  
                 self.set_phase("Mouvement")
     
     #détermine les actions  défensive faite pendant la phase de combat SI LA PERSONNE DECIDE DE DEFENDRE

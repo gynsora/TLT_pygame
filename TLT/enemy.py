@@ -14,6 +14,9 @@ class Enemy(Characters):
         self.index_entities  = ""
         self.game_phase = ""
 
+        #"temps de reflexion de l'ennemi"
+        self.thinking_time = 0
+
         #chemin vers le spritesheet de l'ennemi
         directory_spritesheet_img = os.path.join(os.path.dirname(__file__), "../Assets/img/spritesheet")
         #chargement de l'image spritesheet à partie du chemin de la ligne précédante
@@ -41,12 +44,13 @@ class Enemy(Characters):
         self.spell_selected = []
     
     def actions(self, game):
-        if self.index_entities == self.name  and self.game_phase == "Mouvement":
-            self.move_choice(game)
-        elif self.index_entities == self.name  and self.game_phase == "Attaque":
-            self.attack_choice(game) 
-        elif self.index_entities == self.name  and self.game_phase == "Défense":
-            self.defense_choice(game)
+        if  game.current_time - self.thinking_time  > 1500: 
+            if self.index_entities == self.name  and self.game_phase == "Mouvement":
+                self.move_choice(game)
+            elif self.index_entities == self.name  and self.game_phase == "Attaque":
+                self.attack_choice(game) 
+            elif self.index_entities == self.name  and self.game_phase == "Défense":
+                self.defense_choice(game)
 
     #permet à l'ennemi de choisir un chemin pour se déplacer en fonction de la position de sont adversaire (player) A AMELIORER
     def move_choice(self,game ):
