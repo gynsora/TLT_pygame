@@ -21,7 +21,7 @@ class Game:
 
         #gestion des tours 
         self.characters = [enemy_attributes["name"],player_attributes["name"],"Animation"]
-        self.current_turn = 0
+        self.current_turn = 1
         self.turn = self.current_turn
         self.characters_turn = self.characters[self.turn]
         self.phase = "Début"
@@ -31,8 +31,6 @@ class Game:
         directory_bg = os.path.join(os.path.dirname(__file__), "../Assets/img/background")
         self.bg = pygame.image.load(os.path.join(directory_bg, bg_image)).convert_alpha()
         
-        
-
     def new(self):
         #création du board du jeu
         self.board = Board()

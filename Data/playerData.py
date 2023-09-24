@@ -2,8 +2,8 @@ from  TLT.constants import *
 PLAYER_LIST = {
     "Gynsora":{ 
 		"name" : "Gynsora",
-        "x" : 2 ,
-        "y" : 0,
+        "x" : 3 ,
+        "y" : 4,
         "width" : 64,
         "height" : 64 ,
         "color" : ELECTRIK ,

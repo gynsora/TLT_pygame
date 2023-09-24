@@ -38,7 +38,7 @@ class Player(Characters):
         #Création des boutons "spell" du joueur
         self.spells_Buttons = []
         for i, spell_attributes in enumerate(self.spells_List):
-            self.spells_Buttons.append(Button_Spell(directory_spells_img, spell_attributes, 20+(i * 70), 700, 64, 64))
+            self.spells_Buttons.append(Button_Spell(directory_spells_img, spell_attributes, 200+(i * 70), 600, 64, 64))
 
         #création du bouton de "fin de tour"
         self.end_turn_button = Button_Phase_Switcher("", 65, 65, (700,600))
@@ -102,8 +102,7 @@ class Player(Characters):
         
         # print('all unpressed all unselected')
 
- 
-    #permet de determine quelle sort à été choisi par le player
+    #permet de déterminer quelle sort à été choisi par le player
     def switch_spell_selected(self):
         for spell in self.spells_Buttons:
             if spell.selected and self.game_phase == spell.spell_attributes["type"]:

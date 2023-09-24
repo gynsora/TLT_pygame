@@ -38,20 +38,20 @@ def main():
                 run = False
                 
             #test heatlthbar
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP:
-                    game.player.health.gain_health(200)
-                    game.player.health.gain_endurance(1)
-                if event.key == pygame.K_DOWN:
-                    game.player.health.lost_health(200)
-                    game.player.health.lost_endurance(1)
+            # if event.type == pygame.KEYDOWN:
+            #     if event.key == pygame.K_UP:
+            #         game.player.health.gain_health(200)
+            #         game.player.health.gain_endurance(1)
+            #     if event.key == pygame.K_DOWN:
+            #         game.player.health.lost_health(200)
+            #         game.player.health.lost_endurance(1)
                     
-                if event.key == pygame.K_RIGHT:
-                    game.enemy.health.gain_health(200)
-                    game.enemy.health.gain_endurance(1)
-                if event.key == pygame.K_LEFT:
-                    game.enemy.health.lost_health(200)
-                    game.enemy.health.lost_endurance(1)
+            #     if event.key == pygame.K_RIGHT:
+            #         game.enemy.health.gain_health(200)
+            #         game.enemy.health.gain_endurance(1)
+            #     if event.key == pygame.K_LEFT:
+            #         game.enemy.health.lost_health(200)
+            #         game.enemy.health.lost_endurance(1)
             
                 
            

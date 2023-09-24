@@ -2,7 +2,7 @@ from TLT.constants import *
 ENEMY_LIST = { 
     "Dragoon":{
         "name" : "Dragoon",
-        "x" : 0 ,
+        "x" : 2 ,
         "y" : 0 ,
         "width" : 64,
         "height" : 64 ,
