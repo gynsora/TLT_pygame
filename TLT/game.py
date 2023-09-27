@@ -116,6 +116,7 @@ class Game:
                 #remettre self.player.squares à vide apres avoir selectionnée (la zone d'attaque du joueur)
                 self.player.squares = []
             if self.characters_turn == self.enemy.name:
+                self.player.squares = []
                 print("defense enemy")
                 self.enemy.thinking_time = pygame.time.get_ticks()  
                 

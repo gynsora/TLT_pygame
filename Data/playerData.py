@@ -63,6 +63,30 @@ PLAYER_LIST = {
 				"damage": 300
 			},
             {
+				"name" : "Tsunami",
+                "image" : "sampleAttaque",
+				"type" : "Attaque",
+				"direction":"Aérienne",
+				"description" :"lance un tsunami",
+                "element":"eau",
+                "range":3,
+                "rangeForm": "Diamond",
+                "zone" :1,
+                "zoneForm" : "Cross",
+				"cost":				
+				{
+				  "hp" : 0,
+				  "endurance" : 2
+				},
+				"gain":
+				{
+				  "hp" : 0,
+				  "endurance" : 0
+				},				
+				"gcd":1,
+				"damage": 300
+			},
+            {
 				"name" : "Heal",
                 "image" : "sampleDefense",
 				"type" : "Défense",
